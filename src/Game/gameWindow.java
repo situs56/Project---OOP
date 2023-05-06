@@ -3,14 +3,17 @@ package src.Game;
 import javax.swing.JFrame;
 
 public class gameWindow {
-    public gameWindow() {
-        gamePanel panel = new gamePanel();
 
-        JFrame applicationFrame = new JFrame();
+    private JFrame jFrame;
 
-        applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        applicationFrame.add(panel);
-        applicationFrame.setSize(300, 300);
-        applicationFrame.setVisible(true);
+    public gameWindow(gamePanel panel) {
+
+        jFrame = new JFrame();
+
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.add(panel);
+        jFrame.setResizable(false);
+        jFrame.pack();
+        jFrame.setVisible(true);
     }
 }

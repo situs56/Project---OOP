@@ -1,17 +1,26 @@
 
 package src.Game;
 
+import java.awt.Graphics;
+
+import src.Entities.Player;
+
 public class Game implements Runnable {
+    
     private gamePanel panel;
     private gameWindow window;
     private Thread gameLoopThread;
+    private Player player;
     private final int FPS = 60;
     private final int UPS = 100;
 
     public Game() {
-        panel = new gamePanel();
-        window = new gameWindow();
+        initClasses();
+
+        panel = new gamePanel(this);
+        window = new gameWindow(panel);       
         panel.requestFocus();
+
         startGameLoop();
     }
 
@@ -21,7 +30,15 @@ public class Game implements Runnable {
     }
 
     public void update() {
+        player.updatePos();
+    }
 
+    public void render(Graphics g) {
+        player.Render(g);
+    }
+
+    public void initClasses() {
+        player = new Player(200, 200);
     }
 
     @Override
@@ -58,5 +75,9 @@ public class Game implements Runnable {
                 deltaF--;
             }
         }
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }
