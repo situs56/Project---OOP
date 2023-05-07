@@ -2,16 +2,27 @@ package src.Entities;
 
 import java.awt.Graphics;
 
+import src.Object.Platform;
+
 public class Player extends Entity {
 
     private boolean left, right, up, down;
-    private float speed = 0.00005f;
+    
 
-    public Player(float x, float y) {
-        super(x, y);
+    public Player(float x, float y, float speed, int height, int width) {
+        super(x, y, speed, height, width);
+    }
+
+    public void updatePlayer() {
+        updatePos();
+        updateHitBox();
     }
 
     public void updatePos() {
+
+        if (getHitBox().intersects(Platform.platformHitbox())) {
+            y = Platform.getY() - height;
+        }
 
         if (left && !right) {
             x -= speed;
@@ -31,7 +42,8 @@ public class Player extends Entity {
     }
 
     public void Render(Graphics g) {
-        g.drawRect((int) x, (int) y, 200, 200);
+        g.drawRect((int) x, (int) y, 64, 64);
+        drawHitBox(g);
     }
 
     public boolean isLeft() {

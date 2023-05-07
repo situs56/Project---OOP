@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Panel;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import static src.Game.Game.game_Height;
+import static src.Game.Game.game_Width;
 
 import javax.swing.JPanel;
 
@@ -21,14 +23,14 @@ public class gamePanel extends JPanel {
     }
 
     public void setPanelSize() {
-        Dimension size = new Dimension(1000, 1000);
+        Dimension size = new Dimension(game_Width, game_Height);
         setPreferredSize(size);
+        System.out.println("Height: " + game_Height + "Width: " + game_Width);
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         game.render(g);
-        // g.drawRect(100, 100, 50, 50);
     }
 
     public Game getGame() {
