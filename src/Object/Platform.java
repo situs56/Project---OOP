@@ -23,8 +23,8 @@ public class Platform extends GameObject {
         g.fillRect(0, game_Height - (game_Height/5), game_Width, game_Height/5);
     }
 
-    public static int getY() {
-        return (int) game_Height - (game_Height/5);
+    public static float getY() {
+        return game_Height - (game_Height/5);
     }
 
 }

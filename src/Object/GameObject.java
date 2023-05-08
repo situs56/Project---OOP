@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 public class GameObject {
     
     protected float x;
-    protected float y;
+    protected static float y;
     protected int height;
     protected int width;
     protected static Rectangle hitBox;

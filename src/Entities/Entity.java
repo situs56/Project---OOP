@@ -8,15 +8,15 @@ public abstract class Entity {
 
     protected static float x;
     protected static float y;
-    protected static float speed;
+    // protected static int speed;
     protected static int width;
     protected static int height;
     protected static Rectangle hitBox;
 
-    public Entity(float x, float y, float speed, int width, int height) {
+    public Entity(float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
-        this.speed = speed;
+        // this.speed = speed;
         this.width = width;
         this.height = height;
         hitbox();

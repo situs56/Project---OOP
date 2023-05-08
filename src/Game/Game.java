@@ -50,7 +50,7 @@ public class Game implements Runnable {
     }
 
     public void initClasses() {
-        player = new Player(0, 0, 0.00005f, 64, 64);
+        player = new Player(game_Width/2, game_Height/2, 64, 64);
     }
 
     @Override
