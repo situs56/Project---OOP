@@ -9,10 +9,10 @@ import src.Object.Platform;
 public class Player extends Entity {
 
     private boolean left, right, up, down;
-    private float gravity = 0.00005f * Game.Scale;
-    private float jumpSpeed = 0.00005f * Game.Scale;
+    private float gravity = 0.0005f * Game.Scale;
+    private float jumpSpeed = 0.2f * Game.Scale;
     private float airSpeed = 0.0f;
-    private float speed = 0.00005f;
+    private float speed = 0.5f;
     private boolean onGround = true;
 
     public Player(float x, float y, int height, int width) {
@@ -37,12 +37,14 @@ public class Player extends Entity {
 
         }
 
-        if (up && !down) {
-            Ymove = -speed;
+        if (!onGround) {
+            airSpeed += gravity;
+            Ymove += airSpeed;
+        }   
 
-        } else if (down && !up) {
-            Ymove = speed;
-
+        if (up && onGround) {
+            airSpeed = -jumpSpeed;
+            onGround = false;
         }
 
         if (!Solid(x, y, Xmove, Ymove)) {
@@ -51,6 +53,7 @@ public class Player extends Entity {
         } else if (Ymove > 0) {
             resetOnGround();
         }
+        
     }
 
     public void Render(Graphics g) {
@@ -60,7 +63,7 @@ public class Player extends Entity {
 
     public void resetOnGround() {
         onGround = true;
-        airSpeed = 0;
+        airSpeed = 0f;
     }
 
     public boolean isLeft() {
@@ -87,13 +90,13 @@ public class Player extends Entity {
         this.up = up;
     }
 
-    public boolean isDown() {
-        return down;
-    }
+    // public boolean isDown() {
+    //     return down;
+    // }
 
-    public void setDown(boolean down) {
-        this.down = down;
-    }
+    // public void setDown(boolean down) {
+    //     this.down = down;
+    // }
 
     private static boolean Solid(float x, float y, float Xmove, float Ymove) {
 

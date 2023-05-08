@@ -28,7 +28,7 @@ public class KeyboardInputs implements KeyListener {
                 panel.getGame().getPlayer().setLeft(true);
                 break;
             case KeyEvent.VK_S:
-                panel.getGame().getPlayer().setDown(true);
+                // panel.getGame().getPlayer().setDown(true);
                 break;
             case KeyEvent.VK_D:
                 panel.getGame().getPlayer().setRight(true);
@@ -49,7 +49,7 @@ public class KeyboardInputs implements KeyListener {
                 panel.getGame().getPlayer().setUp(false);
                 break;
             case KeyEvent.VK_S:
-                panel.getGame().getPlayer().setDown(false);
+                // panel.getGame().getPlayer().setDown(false);
         }
     }
 }

@@ -2,6 +2,7 @@
 package src.Game;
 
 import java.awt.Graphics;
+import java.sql.Time;
 
 import javax.swing.text.html.parser.Entity;
 
@@ -14,8 +15,8 @@ public class Game implements Runnable {
     private gameWindow window;
     private Thread gameLoopThread;
     private Player player;
-    private final int FPS = 60;
-    private final int UPS = 100;
+    private final int FPS = 240;
+    private final int UPS = 240;
 
     public final static int Tile_Size = 32;
     public final static float Scale = 2f;
@@ -62,7 +63,7 @@ public class Game implements Runnable {
         double timePerUpdate = 1000000000.0 / UPS;
 
         long previousTime = System.nanoTime();
-
+        
         int frames = 0;
         int updates = 0;
 
@@ -70,10 +71,15 @@ public class Game implements Runnable {
         double deltaU = 0;
 
         while (true) {
+
+            // previousTime = System.nanoTime();
+
             long currentTime = System.nanoTime();
 
             deltaF += ((currentTime - previousTime) / timePerFrame);
             deltaU += ((currentTime - previousTime) / timePerUpdate);
+            previousTime = currentTime;
+
 
             if (deltaU >= 1) {
                 update();
