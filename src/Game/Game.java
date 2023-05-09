@@ -2,21 +2,23 @@
 package src.Game;
 
 import java.awt.Graphics;
-import java.sql.Time;
-
-import javax.swing.text.html.parser.Entity;
 
 import src.Entities.Player;
-import src.Object.Platform;
+import src.Gamestate.Gamestate;
+import src.Gamestate.Menu;
+import src.Gamestate.Playing;
 
 public class Game implements Runnable {
-    
+
     private gamePanel panel;
     private gameWindow window;
     private Thread gameLoopThread;
     private Player player;
     private final int FPS = 240;
     private final int UPS = 240;
+
+    private Playing playing;
+    private Menu menu;
 
     public final static int Tile_Size = 32;
     public final static float Scale = 2f;
@@ -25,15 +27,18 @@ public class Game implements Runnable {
     public final static int Tile_Actual_Size = (int) Scale * Tile_Size;
     public final static int game_Height = Tile_Actual_Size * Tiles_in_height;
     public final static int game_Width = Tile_Actual_Size * Tiles_in_width;
-    
+
     public Game() {
         initClasses();
-
         panel = new gamePanel(this);
-        window = new gameWindow(panel);       
+        window = new gameWindow(panel);
         panel.requestFocus();
-
         startGameLoop();
+    }
+
+    public void initClasses() {
+        menu = new Menu(this);
+        playing = new Playing(this);
     }
 
     private void startGameLoop() {
@@ -42,16 +47,30 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        player.updatePlayer();
+        switch (Gamestate.state) {
+            case MENU:
+                menu.update();
+                break;
+            case PLAYING:
+                playing.update();
+                break;
+            default:
+                break;
+        }
     }
 
     public void render(Graphics g) {
-        player.Render(g);
-        Platform.drawPlatform(g);
-    }
+        switch (Gamestate.state) {
+            case MENU:
+                menu.draw(g);
+                break;
+            case PLAYING:
+                playing.draw(g);
+                break;
+            default:
+                break;
+        }
 
-    public void initClasses() {
-        player = new Player(game_Width/2, game_Height/2, 64, 64);
     }
 
     @Override
@@ -63,7 +82,7 @@ public class Game implements Runnable {
         double timePerUpdate = 1000000000.0 / UPS;
 
         long previousTime = System.nanoTime();
-        
+
         int frames = 0;
         int updates = 0;
 
@@ -80,7 +99,6 @@ public class Game implements Runnable {
             deltaU += ((currentTime - previousTime) / timePerUpdate);
             previousTime = currentTime;
 
-
             if (deltaU >= 1) {
                 update();
                 updates++;
@@ -95,7 +113,11 @@ public class Game implements Runnable {
         }
     }
 
-    public Player getPlayer() {
-        return player;
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public Playing getPlaying() {
+        return playing;
     }
 }
