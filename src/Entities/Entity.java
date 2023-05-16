@@ -6,17 +6,15 @@ import java.awt.Rectangle;
 
 public abstract class Entity {
 
-    protected static float x;
-    protected static float y;
-    // protected static int speed;
-    protected static int width;
-    protected static int height;
-    protected static Rectangle hitBox;
+    protected float x;
+    public float y;
+    protected int width;
+    protected int height;
+    protected Rectangle hitBox;
 
     public Entity(float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
-        // this.speed = speed;
         this.width = width;
         this.height = height;
         hitbox();
@@ -31,12 +29,12 @@ public abstract class Entity {
         hitBox.y = (int) y;
     }
 
-    public static Rectangle getHitBox() {
+    public Rectangle getHitBox() {
         return hitBox;
     }
 
-    public static void drawHitBox(Graphics g) {
+    public void drawHitBox(Graphics g) {
         g.setColor(Color.blue);
-        g.drawRect(hitBox.x, hitBox.y, width, height);
+        g.drawRect((int) x, (int) y, width, height);
     }
 }

@@ -25,22 +25,19 @@ public class Player extends Entity {
     }
 
     public void updatePos() {
-
         float Xmove = 0, Ymove = 0;
 
         if (left) {
             Xmove -= speed;
-
         }
         if (right) {
             Xmove += speed;
-
         }
 
         if (!onGround) {
             airSpeed += gravity;
             Ymove += airSpeed;
-        }   
+        }
 
         if (up && onGround) {
             airSpeed = -jumpSpeed;
@@ -50,14 +47,20 @@ public class Player extends Entity {
         if (!Solid(x, y, Xmove, Ymove)) {
             this.x += Xmove;
             this.y += Ymove;
+
+            if (this.x < 0) {
+                this.x = 0;
+            } else if (this.x + width > Game.game_Width) {
+                this.x = Game.game_Width - width;
+            }
+
         } else if (Ymove > 0) {
             resetOnGround();
         }
-        
     }
 
     public void Render(Graphics g) {
-        g.drawRect((int) x, (int) y, 64, 64);
+        g.drawRect((int) x, (int) y, width, height);
         drawHitBox(g);
     }
 
@@ -90,16 +93,7 @@ public class Player extends Entity {
         this.up = up;
     }
 
-    // public boolean isDown() {
-    //     return down;
-    // }
-
-    // public void setDown(boolean down) {
-    //     this.down = down;
-    // }
-
-    private static boolean Solid(float x, float y, float Xmove, float Ymove) {
-
+    private boolean Solid(float x, float y, float Xmove, float Ymove) {
         Rectangle Predict = new Rectangle((int) (x + Xmove), (int) (y + Ymove), width, height);
 
         if (Predict.x < 0 || Predict.x >= Game.game_Width)
@@ -110,8 +104,6 @@ public class Player extends Entity {
 
         if (Predict.intersects(Platform.platformHitbox()))
             return true;
-
         return false;
     }
-
 }
