@@ -6,12 +6,13 @@ import java.awt.event.KeyEvent;
 import src.Entities.Player;
 import src.Game.Game;
 import src.Level.Level;
-import src.Object.Platform;
+import src.Object.Platform2;
 
 public class Playing extends State implements Methods {
 
+    private Platform2 platform2;
     private Player player;
-    private Level level;
+    private Level level;    
 
     public Playing(Game game) {
         super(game);
@@ -22,6 +23,9 @@ public class Playing extends State implements Methods {
         player = new Player(Game.game_Width / 2, Game.game_Height / 2, 64, 64);
         level = new Level();
         level.createArrow(32, 32);
+        Level.addPlatform(200, 270, 100, 20);
+        Level.addPlatform(500, 350, 100, 20);
+        Level.addPlatform(300, 300, 100, 20);
     }
 
     @Override
@@ -33,7 +37,6 @@ public class Playing extends State implements Methods {
     @Override
     public void draw(Graphics g) {
         player.Render(g);
-        Platform.drawPlatform(g);
         Level.draw(g);
     }
 

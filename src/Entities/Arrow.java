@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.util.Random;
 
 import src.Game.Game;
-import src.Level.Level;
-import src.Object.Platform;
 
 public class Arrow extends Entity {
 

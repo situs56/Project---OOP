@@ -27,4 +27,7 @@ public class Platform extends GameObject {
         return game_Height - (game_Height/5);
     }
 
+    public float getHeight() {
+        return height;
+    }
 }

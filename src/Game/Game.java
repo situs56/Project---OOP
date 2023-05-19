@@ -22,8 +22,8 @@ public class Game implements Runnable {
 
     public final static int Tile_Size = 32;
     public final static float Scale = 2f;
-    public final static int Tiles_in_height = 15;
-    public final static int Tiles_in_width = 15;
+    public final static int Tiles_in_height = 8;
+    public final static int Tiles_in_width = 12;
     public final static int Tile_Actual_Size = (int) Scale * Tile_Size;
     public final static int game_Height = Tile_Actual_Size * Tiles_in_height;
     public final static int game_Width = Tile_Actual_Size * Tiles_in_width;
