@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import src.Game.Game;
+import src.Object.ObjectManager;
 import src.Object.Platform;
 import src.Object.Platform2;
 
