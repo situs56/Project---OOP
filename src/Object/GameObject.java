@@ -10,7 +10,7 @@ public class GameObject {
     protected float y;
     protected int height;
     protected int width;
-    protected static Rectangle hitBox;
+    protected Rectangle hitBox;
 
     public GameObject(float x, float y, int height, int width) {
         this.x = x;
@@ -29,7 +29,7 @@ public class GameObject {
         hitBox.y = (int) y;
     }
 
-    public static Rectangle getHitBox() {
+    public Rectangle getHitBox() {
         return hitBox;
     }
 

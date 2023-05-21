@@ -1,15 +1,14 @@
 package src.Level;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
 
 import src.Entities.Arrow;
+import src.Entities.Player;
 import src.Entities.TrapManager;
 import src.Object.Carrots;
 import src.Object.ObjectManager;
 import src.Object.Platform;
-import src.Object.Platform2;
+import src.Object.Score;
 
 public class Level {
 
@@ -43,11 +42,16 @@ public class Level {
 
     public static void draw(Graphics g) {
         trapManager.drawTraps(g);
-        Platform.drawPlatform(g);
         objectManager.drawObject(g);
-        
+        Score.draw(g);
+
     }
+
     public TrapManager getTrapManager() {
         return trapManager;
+    }
+
+    public ObjectManager getObjectManager() {
+        return objectManager;
     }
 }

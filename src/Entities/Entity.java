@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 public abstract class Entity {
 
     protected float x;
-    public float y;
+    protected float y;
     protected int width;
     protected int height;
     protected Rectangle hitBox;

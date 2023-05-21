@@ -3,19 +3,29 @@ package src.Object;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import src.Game.Game;
 
 public class Carrots extends GameObject {
+
     private ObjectManager objectManager;
+
     public static final int size = 20;
+
     public static final Color COLOR = Color.ORANGE;
+
     private Random random;
 
     public Carrots(float x, float y, int height, int width) {
         super(x, y, height, width);
         this.random = new Random();
+    }
+
+    public void updateCarrot() {
+        updateHitBox();
     }
 
     private void resetPosition() {

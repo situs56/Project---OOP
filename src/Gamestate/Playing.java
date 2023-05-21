@@ -8,10 +8,15 @@ import src.Game.Game;
 import src.Level.Level;
 import src.Object.Carrots;
 import src.Object.ObjectManager;
+import src.Object.Platform;
 import src.Object.Platform2;
+
+import static src.Game.Game.game_Height;
+import static src.Game.Game.game_Width;
 
 public class Playing extends State implements Methods {
 
+    private Platform platform;
     private Carrots carrot;
     private Platform2 platform2;
     private Player player;
@@ -26,24 +31,27 @@ public class Playing extends State implements Methods {
     public void initClasses() {
         level = new Level();
         objectManager = new ObjectManager();
-
+        
         level.createArrow(32, 32);
 
-        player = new Player(Game.game_Width / 2, Game.game_Height / 2, 64, 64);
+        player = new Player(Game.game_Width / 2, Game.game_Height / 2, 64, 64, this);
 
-        objectManager.addPlatform(200, 270, 100, 20);
-        objectManager.addPlatform(500, 350, 100, 20);
-        objectManager.addPlatform(300, 300, 100, 20);
-        objectManager.addCarrot(0, 0);
-        objectManager.addCarrot(0, 0);
-        objectManager.addCarrot(0, 0);
+        objectManager.addPlatform(0, game_Height - (game_Height/5), game_Height/5, game_Width);
+
+        objectManager.addPlatform2(200, 270, 100, 20);
+        objectManager.addPlatform2(500, 350, 100, 20);
+        objectManager.addPlatform2(300, 300, 100, 20);
+
+        level.createCarrot(32, 32);
+
+        objectManager.addScore();
 
     }
 
     @Override
     public void update() {
-        player.updatePlayer();
         Level.update();
+        player.updatePlayer();
     }
 
     @Override
@@ -91,4 +99,7 @@ public class Playing extends State implements Methods {
         return player;
     }
 
+	public void checkCarrotTouched(Player player) {
+        objectManager.checkCarrotTouched(player);
+	}
 }

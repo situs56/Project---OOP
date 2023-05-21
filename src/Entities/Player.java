@@ -2,13 +2,15 @@ package src.Entities;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-
 import src.Game.Game;
-import src.Object.ObjectManager;
+import src.Gamestate.Playing;
 import src.Object.Platform;
 import src.Object.Platform2;
 
 public class Player extends Entity {
+
+    private Playing playing;
+    private Platform platform;
 
     private boolean left, right, up;
     private float gravity = 0.0005f * Game.Scale;
@@ -17,43 +19,45 @@ public class Player extends Entity {
     private float speed = 0.5f;
     private boolean onGround = false;
 
-    public Player(float x, float y, int height, int width) {
+    public Player(float x, float y, int height, int width, Playing playing) {
         super(x, y, height, width);
+        this.playing = playing;
     }
 
     public void updatePlayer() {
         updatePos();
         updateHitBox();
+        checkCarrotTouched();
     }
 
     public void updatePos() {
         float Xmove = 0, Ymove = 0;
-    
+
         if (left) {
             Xmove -= speed;
         }
         if (right) {
             Xmove += speed;
         }
-    
+
         if (!onGround) {
             airSpeed += gravity;
             Ymove += airSpeed;
         } else {
             airSpeed = 0f;
         }
-    
+
         if (up && onGround) {
             airSpeed = -jumpSpeed;
             onGround = false;
         }
-    
+
         if (!Solid(x, y, Xmove, Ymove)) {
             this.x += Xmove;
             this.y += Ymove;
-    
+
             onGround = false;
-    
+
             if (this.x < 0) {
                 this.x = 0;
             } else if (this.x + width > Game.game_Width) {
@@ -65,11 +69,10 @@ public class Player extends Entity {
             } else if (Ymove < 0) {
                 airSpeed = 0f;
             } else if (Ymove == 0) {
-                onGround = true; 
+                onGround = true;
             }
         }
     }
-    
 
     public void Render(Graphics g) {
         g.drawRect((int) x, (int) y, width, height);
@@ -114,8 +117,9 @@ public class Player extends Entity {
         if (Predict.y < 0 || Predict.y >= Game.game_Height)
             return true;
 
-        if (Predict.intersects(Platform.platformHitbox()))
-            return true;
+        for (Rectangle platformHitbox : Platform.platformHitboxList())
+            if (Predict.intersects(platformHitbox))
+                return true;
 
         for (Rectangle platform2Hitbox : Platform2.platform2HitboxList()) {
             if (Predict.intersects(platform2Hitbox)) {
@@ -126,5 +130,9 @@ public class Player extends Entity {
             }
         }
         return false;
+    }
+
+    public void checkCarrotTouched() {
+        playing.checkCarrotTouched(this);
     }
 }

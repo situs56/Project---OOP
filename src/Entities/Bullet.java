@@ -23,7 +23,7 @@ public class Bullet extends Entity {
 
     public void draw(Graphics g) {
         g.drawRect((int) x, (int) y, width, height);
-        // drawHitBox(g);
+        drawHitBox(g);
     }
 
     public boolean shouldRemove() {

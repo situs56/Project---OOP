@@ -30,7 +30,8 @@ public class Menu extends State implements Methods {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
+        if (e.getKeyCode() == KeyEvent.VK_ENTER);
+            Gamestate.state = Gamestate.PLAYING;
     }
     
 }
