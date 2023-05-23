@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 public class Bullet extends Entity {
 
-    private float speed = 1f;
+    private float speed = 0.2f;
     private int dir;
 
     public Bullet(float x, float y, int width, int height, int dir) {
@@ -24,9 +24,5 @@ public class Bullet extends Entity {
     public void draw(Graphics g) {
         g.drawRect((int) x, (int) y, width, height);
         drawHitBox(g);
-    }
-
-    public boolean shouldRemove() {
-        return false;
     }
 }

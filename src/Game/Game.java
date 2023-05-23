@@ -91,8 +91,6 @@ public class Game implements Runnable {
 
         while (true) {
 
-            // previousTime = System.nanoTime();
-
             long currentTime = System.nanoTime();
 
             deltaF += ((currentTime - previousTime) / timePerFrame);

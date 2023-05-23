@@ -12,11 +12,11 @@ public class GameObject {
     protected int width;
     protected Rectangle hitBox;
 
-    public GameObject(float x, float y, int height, int width) {
+    public GameObject(float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
-        this.height = height;
         this.width = width;
+        this.height = height;
         hitbox();
     }
 

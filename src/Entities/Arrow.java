@@ -26,7 +26,7 @@ public class Arrow extends Entity {
     }
 
     private void resetPosition() {
-        this.y = 0;
+        this.y = -(random.nextInt(300) + 100);
         this.x = random.nextInt(Game.game_Width - width);
     }
 

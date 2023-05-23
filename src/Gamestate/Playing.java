@@ -2,17 +2,17 @@ package src.Gamestate;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import src.Entities.Player;
+import src.Entities.TrapManager;
 import src.Game.Game;
 import src.Level.Level;
 import src.Object.Carrots;
 import src.Object.ObjectManager;
 import src.Object.Platform;
 import src.Object.Platform2;
-
-import static src.Game.Game.game_Height;
-import static src.Game.Game.game_Width;
 
 public class Playing extends State implements Methods {
 
@@ -22,6 +22,9 @@ public class Playing extends State implements Methods {
     private Player player;
     private Level level;
     private ObjectManager objectManager;
+    private TrapManager trapManager;
+
+    private static long lastSpawn = System.currentTimeMillis();
 
     public Playing(Game game) {
         super(game);
@@ -31,21 +34,43 @@ public class Playing extends State implements Methods {
     public void initClasses() {
         level = new Level();
         objectManager = new ObjectManager();
-        
-        level.createArrow(32, 32);
+        trapManager = new TrapManager();
 
-        player = new Player(Game.game_Width / 2, Game.game_Height / 2, 64, 64, this);
+        createTrap();
 
-        objectManager.addPlatform(0, game_Height - (game_Height/5), game_Height/5, game_Width);
+        level.createCarrot();
+        level.createArrow(20, 100);
+        level.createPlatform();
+        level.createPlatform2();
 
-        objectManager.addPlatform2(200, 270, 100, 20);
-        objectManager.addPlatform2(500, 350, 100, 20);
-        objectManager.addPlatform2(300, 300, 100, 20);
-
-        level.createCarrot(32, 32);
+        player = new Player(Game.game_Width / 2, Game.game_Height / 2, 32, 32, this);
 
         objectManager.addScore();
+        objectManager.addTimer();
 
+    }
+
+    public void createTrap() {
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                int randomTrap = (int) (Math.random() * 3);
+
+                switch (randomTrap) {
+                    case 0:
+                        level.createSaw();
+                        break;
+                    case 1:
+                        level.createCannon();
+                        break;
+                    case 2:
+                        level.createBall();
+                        break;
+                }
+            }
+        }, 0, 10000);
     }
 
     @Override
@@ -99,7 +124,19 @@ public class Playing extends State implements Methods {
         return player;
     }
 
-	public void checkCarrotTouched(Player player) {
+    public void checkCarrotTouched(Player player) {
         objectManager.checkCarrotTouched(player);
-	}
+    }
+
+    public void checkArrowTouched(Player player) {
+        trapManager.checkArrowTouched(player);
+    }
+
+    public void checkBulletTouched(Player player) {
+        trapManager.checkBulletTouched(player);
+    }
+
+    public void checkBallTouched(Player player) {
+        trapManager.checkBallTouched(player);
+    }
 }

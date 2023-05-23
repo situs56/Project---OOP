@@ -19,7 +19,7 @@ public class Score {
         this.score = 0;
     }
 
-    public static void ScoreIncrease(int Increase) {
+    public void ScoreIncrease(int Increase) {
         score += Increase;
     }
 

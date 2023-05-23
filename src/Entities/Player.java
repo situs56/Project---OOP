@@ -13,8 +13,8 @@ public class Player extends Entity {
     private Platform platform;
 
     private boolean left, right, up;
-    private float gravity = 0.0005f * Game.Scale;
-    private float jumpSpeed = 0.25f * Game.Scale;
+    private float gravity = 0.002f * Game.Scale;
+    private float jumpSpeed = 0.4f * Game.Scale;
     private float airSpeed = 0.0f;
     private float speed = 0.5f;
     private boolean onGround = false;
@@ -27,7 +27,7 @@ public class Player extends Entity {
     public void updatePlayer() {
         updatePos();
         updateHitBox();
-        checkCarrotTouched();
+        Touching();
     }
 
     public void updatePos() {
@@ -71,6 +71,10 @@ public class Player extends Entity {
             } else if (Ymove == 0) {
                 onGround = true;
             }
+        }
+
+        if (onGround) {
+            this.x += Xmove;
         }
     }
 
@@ -134,5 +138,28 @@ public class Player extends Entity {
 
     public void checkCarrotTouched() {
         playing.checkCarrotTouched(this);
+    }
+
+    public void checkArrowTouched() {
+        playing.checkArrowTouched(this);
+    }
+
+    public void checkBulletTouched() {
+        playing.checkBulletTouched(this);
+    }
+
+    public void checkBallTouched() {
+        playing.checkBallTouched(this);
+    }
+
+    public void Touching() {
+        checkArrowTouched();
+        checkBulletTouched();
+        checkCarrotTouched();
+        checkBallTouched();
+    }
+
+    public float getHeight() {
+        return height;
     }
 }

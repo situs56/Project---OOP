@@ -2,12 +2,7 @@ package src.Object;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
-import src.Game.Game;
 
 public class Carrots extends GameObject {
 
@@ -26,11 +21,6 @@ public class Carrots extends GameObject {
 
     public void updateCarrot() {
         updateHitBox();
-    }
-
-    private void resetPosition() {
-        this.x = random.nextInt(Game.game_Width - width);
-        this.y = random.nextInt(Game.game_Height - height);
     }
 
     public void drawCarrot(Graphics g) {

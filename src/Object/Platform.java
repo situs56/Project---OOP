@@ -13,8 +13,8 @@ public class Platform extends GameObject {
 
     private static List<Rectangle> platformHitboxes = new ArrayList<>();
 
-    public Platform(float x, float y, int height, int width) {    
-       super(x, y, height, width);
+    public Platform(float x, float y, int width, int height) {    
+       super(x, y, width, height);
     }
 
     public void drawPlatform(Graphics g) {

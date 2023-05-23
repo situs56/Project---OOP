@@ -10,7 +10,7 @@ public class Platform2 extends GameObject {
 
     private static List<Rectangle> platform2Hitboxes = new ArrayList<>();
 
-    public Platform2(float x, float y, int height, int width) {
+    public Platform2(float x, float y, int width, int height) {
         super(x, y, width, height);
     }
 

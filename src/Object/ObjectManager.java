@@ -12,6 +12,7 @@ import src.Game.Game;
 public class ObjectManager {
 
     private Score score;
+    private Timer timer;
     private Random random;
     private Player player;
     private Platform platform;
@@ -27,7 +28,7 @@ public class ObjectManager {
     }
 
     public void updateObject() {
-
+        
     }
 
     public void drawObject(Graphics g) {
@@ -44,8 +45,8 @@ public class ObjectManager {
         }
     }
 
-    public void addCarrot(int width, int height) {
-        Carrots newCarrot = new Carrots(random.nextInt(Game.game_Width - width), 300, width, height);
+    public void addCarrot(float x, float y, int width, int height) {
+        Carrots newCarrot = new Carrots(x, y, height, width);
         carrots.add(newCarrot);
     }
 
@@ -53,14 +54,19 @@ public class ObjectManager {
         score = new Score(10, 30, new Font("Arial", Font.BOLD, 20), Color.BLACK);
     }
 
-    public void addPlatform(float x, float y, int height, int width) {
-        platform = new Platform(x, y, height, width);
+    public void addTimer() {
+        timer = new Timer(Game.game_Width - 200, 30, new Font("Arial", Font.BOLD, 20), Color.green);
+        timer.startTimer();
+    }
+
+    public void addPlatform(float x, float y, int width, int height) {
+        platform = new Platform(x, y, width, height);
         platforms.add(platform);
         Platform.addPlatformHitbox(platform.getHitBox());
     }
 
-    public static void addPlatform2(float x, float y, int height, int width) {
-        Platform2 platform2 = new Platform2(x, y, height, width);
+    public static void addPlatform2(float x, float y, int width, int height) {
+        Platform2 platform2 = new Platform2(x, y, width, height);
         platform2s.add(platform2);
         Platform2.addPlatform2Hitbox(platform2.getHitBox());
     }
@@ -81,8 +87,45 @@ public class ObjectManager {
         for (Carrots c : getCarrots())
             if (c.getHitBox().intersects(player.getHitBox())) {
                 removeCarrot(c);
-                addCarrot(32, 32);
-                Score.ScoreIncrease(1);
+                RandomCarrots();
+                score.ScoreIncrease(1);
             }
+    }
+
+    public void RandomCarrots() {
+        int random = (int) (Math.random() * 10);
+
+        switch (random) {
+            case 0:
+                addCarrot(248, 340, 32, 32);
+                break;
+            case 1:
+                addCarrot(490, 340, 32, 32);
+                break;
+            case 2:
+                addCarrot(80, 270, 32, 32);
+                break;
+            case 3:
+                addCarrot(370, 270, 32, 32);
+                break;
+            case 4:
+                addCarrot(656, 270, 32, 32);
+                break;
+            case 5:
+                addCarrot(248, 210, 32, 32);
+                break;
+            case 6:
+                addCarrot(490, 210, 32, 32);
+                break;
+            case 7:
+                addCarrot(370, 120, 32, 32);
+                break;
+            case 8:
+                addCarrot(80, 120, 32, 32);
+                break;
+            case 9:
+                addCarrot(656, 120, 32, 32);
+                break;
+        }
     }
 }
