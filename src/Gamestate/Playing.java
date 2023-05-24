@@ -43,7 +43,6 @@ public class Playing extends State implements Methods {
         createTrap();
 
         level.createCarrot();
-        level.createArrow(20, 100);
         level.createPlatform();
         level.createPlatform2();
 
@@ -55,13 +54,13 @@ public class Playing extends State implements Methods {
     }
 
     public void createTrap() {
-
+        level.createArrow(20, 100);
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        TimerTask trapTask = new TimerTask() {
             @Override
             public void run() {
                 int randomTrap = (int) (Math.random() * 3);
-
+    
                 switch (randomTrap) {
                     case 0:
                         level.createSaw();
@@ -74,13 +73,24 @@ public class Playing extends State implements Methods {
                         break;
                 }
             }
-        }, 0, 10000);
+        };
+    
+        timer.scheduleAtFixedRate(trapTask, 0, 10000);
+
+        if (gameOver) {
+            trapTask.cancel();
+            timer.cancel();
+        }
     }
 
     @Override
     public void update() {
         Level.update();
         player.updatePlayer();
+
+        if (gameOver) {
+            resetAll();
+        }
     }
 
     @Override
@@ -88,8 +98,8 @@ public class Playing extends State implements Methods {
         player.Render(g);
         Level.draw(g);
 
-        if (gameOver) 
-            gameOverOverlay.draw(g);
+        // if (gameOver) 
+        //     gameOverOverlay.draw(g);
     }
 
     @Override
@@ -153,7 +163,15 @@ public class Playing extends State implements Methods {
 
     public void resetAll() {
         gameOver = false;
+
         player.resetAll();
+
+        trapManager.clear();
+
+        createTrap();
+
+        objectManager.resetScore();
+        objectManager.resetTimer();
     }
 
     public void setGameOver(boolean gameOver) {

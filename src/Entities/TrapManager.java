@@ -160,4 +160,12 @@ public class TrapManager {
                 player.dead();
             }
     }
+
+    public void clear() {
+        arrows.clear();
+        bullets.clear();
+        cannons.clear();
+        saws.clear();
+        balls.clear();
+    }
 }

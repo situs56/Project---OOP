@@ -28,4 +28,8 @@ public class Score {
         g.setFont(font);
         g.drawString("Score: " + score, x, y);
     }
+
+    public void reset() {
+        score = 0;
+    }
 }

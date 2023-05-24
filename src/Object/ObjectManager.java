@@ -83,6 +83,14 @@ public class ObjectManager {
         return score;
     }
 
+    public void resetScore() {
+        score.reset();
+    }
+
+    public void resetTimer() {
+        timer.startTimer();
+    }
+
     public void checkCarrotTouched(Player player) {
         for (Carrots c : getCarrots())
             if (c.getHitBox().intersects(player.getHitBox())) {
