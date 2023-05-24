@@ -98,8 +98,8 @@ public class Playing extends State implements Methods {
         player.Render(g);
         Level.draw(g);
 
-        // if (gameOver) 
-        //     gameOverOverlay.draw(g);
+        if (gameOver) 
+            gameOverOverlay.draw(g);
     }
 
     @Override
