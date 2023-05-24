@@ -136,21 +136,28 @@ public class TrapManager {
     public void checkArrowTouched(Player player) {
         for (Arrow arrow : getArrows())
             if (arrow.getHitBox().intersects(player.getHitBox())) {
-
+                player.dead();
             }
     }
 
     public void checkBulletTouched(Player player) {
         for (Bullet bullet : getBullets())
             if (bullet.getHitBox().intersects(player.getHitBox())) {
-
+                player.dead();
             }
     }
 
     public void checkBallTouched(Player player) {
         for (Ball ball : getBalls())
             if (ball.getHitBox().intersects(player.getHitBox())) {
+                player.dead();
+            }
+    }
 
+    public void checkSawTouched(Player player) {
+        for (Saw saw : getSaws())
+            if (saw.getHitBox().intersects(player.getHitBox())) {
+                player.dead();
             }
     }
 }

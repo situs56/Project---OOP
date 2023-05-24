@@ -18,6 +18,7 @@ public class Player extends Entity {
     private float airSpeed = 0.0f;
     private float speed = 0.5f;
     private boolean onGround = false;
+    private boolean dead = false;
 
     public Player(float x, float y, int height, int width, Playing playing) {
         super(x, y, height, width);
@@ -28,6 +29,9 @@ public class Player extends Entity {
         updatePos();
         updateHitBox();
         Touching();
+        if (dead == true) {
+            playing.setGameOver(true);
+        }
     }
 
     public void updatePos() {
@@ -83,9 +87,39 @@ public class Player extends Entity {
         drawHitBox(g);
     }
 
+    private boolean Solid(float x, float y, float Xmove, float Ymove) {
+        Rectangle Predict = new Rectangle((int) (x + Xmove), (int) (y + Ymove), width, height);
+
+        if (Predict.x < 0 || Predict.x >= Game.game_Width)
+            return true;
+
+        if (Predict.y < 0 || Predict.y >= Game.game_Height)
+            return true;
+
+        for (Rectangle platformHitbox : Platform.platformHitboxList())
+            if (Predict.intersects(platformHitbox))
+                return true;
+
+        for (Rectangle platform2Hitbox : Platform2.platform2HitboxList()) {
+            if (Predict.intersects(platform2Hitbox)) {
+                if (Ymove > 0 && y + height + Ymove >= platform2Hitbox.getY()
+                        && y + height + Ymove <= platform2Hitbox.getY() + 5) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void resetOnGround() {
         onGround = true;
         airSpeed = 0f;
+    }
+
+    public void resetAll() {
+        dead = false;
+        this.x = Game.game_Width/2;
+        this.y = Game.game_Height/2;
     }
 
     public boolean isLeft() {
@@ -112,28 +146,8 @@ public class Player extends Entity {
         this.up = up;
     }
 
-    private boolean Solid(float x, float y, float Xmove, float Ymove) {
-        Rectangle Predict = new Rectangle((int) (x + Xmove), (int) (y + Ymove), width, height);
-
-        if (Predict.x < 0 || Predict.x >= Game.game_Width)
-            return true;
-
-        if (Predict.y < 0 || Predict.y >= Game.game_Height)
-            return true;
-
-        for (Rectangle platformHitbox : Platform.platformHitboxList())
-            if (Predict.intersects(platformHitbox))
-                return true;
-
-        for (Rectangle platform2Hitbox : Platform2.platform2HitboxList()) {
-            if (Predict.intersects(platform2Hitbox)) {
-                if (Ymove > 0 && y + height + Ymove >= platform2Hitbox.getY()
-                        && y + height + Ymove <= platform2Hitbox.getY() + 5) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public float getHeight() {
+        return height;
     }
 
     public void checkCarrotTouched() {
@@ -152,14 +166,19 @@ public class Player extends Entity {
         playing.checkBallTouched(this);
     }
 
+    private void checkSawTouched() {
+        playing.checkSawTouched(this);
+    }
+
     public void Touching() {
         checkArrowTouched();
         checkBulletTouched();
-        checkCarrotTouched();
         checkBallTouched();
+        checkSawTouched();
+        checkCarrotTouched();
     }
 
-    public float getHeight() {
-        return height;
+    public void dead() {
+        dead = true;
     }
 }

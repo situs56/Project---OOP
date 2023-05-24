@@ -13,6 +13,7 @@ import src.Object.Carrots;
 import src.Object.ObjectManager;
 import src.Object.Platform;
 import src.Object.Platform2;
+import src.UI.GameOverOverlay;
 
 public class Playing extends State implements Methods {
 
@@ -21,10 +22,12 @@ public class Playing extends State implements Methods {
     private Platform2 platform2;
     private Player player;
     private Level level;
+    private GameOverOverlay gameOverOverlay;
     private ObjectManager objectManager;
     private TrapManager trapManager;
 
     private static long lastSpawn = System.currentTimeMillis();
+    private boolean gameOver;
 
     public Playing(Game game) {
         super(game);
@@ -35,6 +38,7 @@ public class Playing extends State implements Methods {
         level = new Level();
         objectManager = new ObjectManager();
         trapManager = new TrapManager();
+        gameOverOverlay = new GameOverOverlay(this);
 
         createTrap();
 
@@ -83,6 +87,9 @@ public class Playing extends State implements Methods {
     public void draw(Graphics g) {
         player.Render(g);
         Level.draw(g);
+
+        if (gameOver) 
+            gameOverOverlay.draw(g);
     }
 
     @Override
@@ -138,5 +145,18 @@ public class Playing extends State implements Methods {
 
     public void checkBallTouched(Player player) {
         trapManager.checkBallTouched(player);
+    }
+
+    public void checkSawTouched(Player player) {
+        trapManager.checkSawTouched(player);
+    }
+
+    public void resetAll() {
+        gameOver = false;
+        player.resetAll();
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }
