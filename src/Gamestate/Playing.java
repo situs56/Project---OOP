@@ -2,6 +2,7 @@ package src.Gamestate;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,6 +15,7 @@ import src.Object.ObjectManager;
 import src.Object.Platform;
 import src.Object.Platform2;
 import src.UI.GameOverOverlay;
+import src.UI.PauseOverlay;
 
 public class Playing extends State implements Methods {
 
@@ -23,10 +25,13 @@ public class Playing extends State implements Methods {
     private Player player;
     private Level level;
     private GameOverOverlay gameOverOverlay;
+    private PauseOverlay pauseOverlay;
     private ObjectManager objectManager;
     private TrapManager trapManager;
 
     private static long lastSpawn = System.currentTimeMillis();
+
+    private boolean paused = false;
     private boolean gameOver;
 
     public Playing(Game game) {
@@ -39,6 +44,8 @@ public class Playing extends State implements Methods {
         objectManager = new ObjectManager();
         trapManager = new TrapManager();
         gameOverOverlay = new GameOverOverlay(this);
+        pauseOverlay = new PauseOverlay(this);
+
 
         createTrap();
 
@@ -60,7 +67,7 @@ public class Playing extends State implements Methods {
             @Override
             public void run() {
                 int randomTrap = (int) (Math.random() * 3);
-    
+
                 switch (randomTrap) {
                     case 0:
                         level.createSaw();
@@ -74,7 +81,7 @@ public class Playing extends State implements Methods {
                 }
             }
         };
-    
+
         timer.scheduleAtFixedRate(trapTask, 0, 10000);
 
         if (gameOver) {
@@ -85,8 +92,10 @@ public class Playing extends State implements Methods {
 
     @Override
     public void update() {
-        Level.update();
-        player.updatePlayer();
+        if (!paused) {
+            Level.update();
+            player.updatePlayer();
+        }
 
         if (gameOver) {
             resetAll();
@@ -98,8 +107,11 @@ public class Playing extends State implements Methods {
         player.Render(g);
         Level.draw(g);
 
-        if (gameOver) 
+        if (gameOver)
             gameOverOverlay.draw(g);
+
+        if (paused)
+            pauseOverlay.draw(g);
     }
 
     @Override
@@ -116,6 +128,14 @@ public class Playing extends State implements Methods {
                 break;
             case KeyEvent.VK_D:
                 player.setRight(true);
+                break;
+            case KeyEvent.VK_ESCAPE:
+                paused = !paused;
+                if (paused) {
+                    pauseGame();
+                } else {
+                    unpauseGame();
+                }
                 break;
         }
     }
@@ -176,5 +196,44 @@ public class Playing extends State implements Methods {
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (paused) {
+            pauseOverlay.mousePressed(e);
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (paused)
+            pauseOverlay.mouseReleased(e);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if (paused) {
+            pauseOverlay.mouseDragged(e);
+        }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if (paused)
+            pauseOverlay.mouseMoved(e);
+    }
+
+    public void unpauseGame() {
+        paused = false;
+    }
+
+    private void pauseGame() {
+        paused = true;
     }
 }

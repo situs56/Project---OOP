@@ -2,6 +2,7 @@ package src.Gamestate;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 import src.Game.Game;
 
@@ -27,11 +28,34 @@ public class Menu extends State implements Methods {
         if (e.getKeyCode() == KeyEvent.VK_ENTER);
             Gamestate.state = Gamestate.PLAYING;
     }
+    public void mouseDragged(MouseEvent e)
+    {};
 
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER);
             Gamestate.state = Gamestate.PLAYING;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
+       
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        // TODO Auto-generated method stub
     }
     
 }
