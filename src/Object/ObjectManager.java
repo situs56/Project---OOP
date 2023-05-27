@@ -91,6 +91,14 @@ public class ObjectManager {
         timer.startTimer();
     }
 
+    public void pauseTimer() {
+        timer.pauseTimer();
+    }
+
+    public void continueTimer() {
+        timer.continueTimer();
+    }
+
     public void checkCarrotTouched(Player player) {
         for (Carrots c : getCarrots())
             if (c.getHitBox().intersects(player.getHitBox())) {

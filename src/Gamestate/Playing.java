@@ -28,6 +28,8 @@ public class Playing extends State implements Methods {
     private PauseOverlay pauseOverlay;
     private ObjectManager objectManager;
     private TrapManager trapManager;
+    private Timer timer;
+    private TimerTask trapTask;
 
     private static long lastSpawn = System.currentTimeMillis();
 
@@ -46,7 +48,6 @@ public class Playing extends State implements Methods {
         gameOverOverlay = new GameOverOverlay(this);
         pauseOverlay = new PauseOverlay(this);
 
-
         createTrap();
 
         level.createCarrot();
@@ -62,42 +63,54 @@ public class Playing extends State implements Methods {
 
     public void createTrap() {
         level.createArrow(20, 100);
-        Timer timer = new Timer();
-        TimerTask trapTask = new TimerTask() {
+        timer = new Timer();
+        scheduleTrapTask();
+    }
+
+    private void scheduleTrapTask() {
+        trapTask = new TimerTask() {
             @Override
             public void run() {
-                int randomTrap = (int) (Math.random() * 3);
-
-                switch (randomTrap) {
-                    case 0:
-                        level.createSaw();
-                        break;
-                    case 1:
-                        level.createCannon();
-                        break;
-                    case 2:
-                        level.createBall();
-                        break;
+                if (!paused) {
+                    int randomTrap = (int) (Math.random() * 3);
+    
+                    switch (randomTrap) {
+                        case 0:
+                            level.createSaw();
+                            break;
+                        case 1:
+                            level.createCannon();
+                            break;
+                        case 2:
+                            level.createBall();
+                            break;
+                    }
                 }
             }
         };
-
+    
         timer.scheduleAtFixedRate(trapTask, 0, 10000);
-
-        if (gameOver) {
-            trapTask.cancel();
-            timer.cancel();
-        }
     }
 
     @Override
     public void update() {
-        if(!gameOver)
-        {if (!paused) {
-            Level.update();
-            player.updatePlayer();
+       
+        if (paused) 
+            objectManager.pauseTimer();
+
+        if (gameOver) {
+            objectManager.resetTimer();
+            trapTask.cancel();
+            timer.cancel();
         }
-    }
+
+        if (!gameOver) {
+            if (!paused) {
+                Level.update();
+                player.updatePlayer();
+                objectManager.continueTimer();
+            }
+        }
     }
 
     @Override
@@ -129,9 +142,9 @@ public class Playing extends State implements Methods {
                 break;
             case KeyEvent.VK_ESCAPE:
                 paused = !paused;
-                if(!gameOver){
+                if (!gameOver) {
                     if (paused) {
-                    pauseGame();
+                        pauseGame();
                     }
                 } else {
                     unpauseGame();
@@ -205,22 +218,22 @@ public class Playing extends State implements Methods {
 
     @Override
     public void mousePressed(MouseEvent e) {
-       if(!gameOver)
-        {if (paused) {
-            pauseOverlay.mousePressed(e);
-        }}
-        else gameOverOverlay.mousePressed(e);
+        if (!gameOver) {
+            if (paused) {
+                pauseOverlay.mousePressed(e);
+            }
+        } else
+            gameOverOverlay.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(!gameOver)
-        {
-        if (paused)
-            pauseOverlay.mouseReleased(e);
+        if (!gameOver) {
+            if (paused)
+                pauseOverlay.mouseReleased(e);
+        } else
+            gameOverOverlay.mouseReleased(e);
     }
-    else gameOverOverlay.mouseReleased(e);
-}
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -231,17 +244,24 @@ public class Playing extends State implements Methods {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (paused)
-            {pauseOverlay.mouseMoved(e);}
+        if (paused) {
+            pauseOverlay.mouseMoved(e);
+        }
 
     }
-  
 
     public void unpauseGame() {
         paused = false;
+        if (!gameOver) {
+            trapTask.cancel();
+            scheduleTrapTask();
+        }
+        objectManager.continueTimer();
     }
 
     private void pauseGame() {
         paused = true;
+        trapTask.cancel();
+        objectManager.pauseTimer();
     }
 }

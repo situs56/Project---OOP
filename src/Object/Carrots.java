@@ -8,7 +8,7 @@ public class Carrots extends GameObject {
 
     private ObjectManager objectManager;
 
-    public static final int size = 20;
+    public static final int size = 32;
 
     public static final Color COLOR = Color.ORANGE;
 
