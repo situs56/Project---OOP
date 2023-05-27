@@ -5,6 +5,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 
 import src.Entities.Player;
 import src.Entities.TrapManager;
@@ -16,6 +20,9 @@ import src.Object.Platform;
 import src.Object.Platform2;
 import src.UI.GameOverOverlay;
 import src.UI.PauseOverlay;
+
+import static src.Game.Game.game_Height;
+import static src.Game.Game.game_Width;
 
 public class Playing extends State implements Methods {
 
@@ -30,6 +37,7 @@ public class Playing extends State implements Methods {
     private TrapManager trapManager;
     private Timer timer;
     private TimerTask trapTask;
+    private BufferedImage img;
 
     private static long lastSpawn = System.currentTimeMillis();
 
@@ -39,6 +47,7 @@ public class Playing extends State implements Methods {
     public Playing(Game game) {
         super(game);
         initClasses();
+        ImportImg();
     }
 
     public void initClasses() {
@@ -73,7 +82,7 @@ public class Playing extends State implements Methods {
             public void run() {
                 if (!paused) {
                     int randomTrap = (int) (Math.random() * 3);
-    
+
                     switch (randomTrap) {
                         case 0:
                             level.createSaw();
@@ -88,14 +97,14 @@ public class Playing extends State implements Methods {
                 }
             }
         };
-    
+
         timer.scheduleAtFixedRate(trapTask, 0, 10000);
     }
 
     @Override
     public void update() {
-       
-        if (paused) 
+
+        if (paused)
             objectManager.pauseTimer();
 
         if (gameOver) {
@@ -115,6 +124,7 @@ public class Playing extends State implements Methods {
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(img, 0, 0, game_Width, game_Height, null);
         player.Render(g);
         Level.draw(g);
 
@@ -123,6 +133,16 @@ public class Playing extends State implements Methods {
 
         if (paused)
             pauseOverlay.draw(g);
+    }
+
+    private void ImportImg() {
+        InputStream is = getClass().getResourceAsStream("/res/background.png");
+        try {
+            img = ImageIO.read(is);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -186,8 +206,8 @@ public class Playing extends State implements Methods {
         trapManager.checkBulletTouched(player);
     }
 
-    public void checkBallTouched(Player player) {
-        trapManager.checkBallTouched(player);
+    public void checkStarTouched(Player player) {
+        trapManager.checkStarTouched(player);
     }
 
     public void checkSawTouched(Player player) {
@@ -201,10 +221,11 @@ public class Playing extends State implements Methods {
 
         trapManager.clear();
 
-        createTrap();
-
         objectManager.resetScore();
         objectManager.resetTimer();
+        objectManager.addTimer();
+
+        createTrap();
     }
 
     public void setGameOver(boolean gameOver) {

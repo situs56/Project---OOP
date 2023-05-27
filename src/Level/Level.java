@@ -46,7 +46,7 @@ public class Level {
     }
 
     public void createBall() {
-        randomBall();
+        randomStar();
     }
 
     public void createCarrot() {
@@ -58,13 +58,13 @@ public class Level {
     }
 
     public void createPlatform2() {
-        objectManager.addPlatform2(160, 330, 32, 20);
-        objectManager.addPlatform2(576, 330, 32, 20);
+        objectManager.addPlatform2(160, 330, 96, 20);
+        objectManager.addPlatform2(576, 330, 96, 20);
         objectManager.addPlatform2(336, 330, 96, 20);
-        objectManager.addPlatform2(214, 250, 100, 20);
-        objectManager.addPlatform2(458, 250, 100, 20);
-        objectManager.addPlatform2(160, 170, 32, 20);
-        objectManager.addPlatform2(576, 170, 32, 20);
+        objectManager.addPlatform2(214, 250, 96, 20);
+        objectManager.addPlatform2(458, 250, 96, 20);
+        objectManager.addPlatform2(160, 170, 96, 20);
+        objectManager.addPlatform2(576, 170, 96, 20);
         objectManager.addPlatform2(336, 170, 96, 20);
     }
 
@@ -122,21 +122,21 @@ public class Level {
         }
     }
 
-    public void randomBall() {
+    public void randomStar() {
         int random3 = (int) (Math.random() * 4);
 
         switch (random3) {
             case 0:
-                trapManager.addBall(0, 0, 32, 32);
+                trapManager.addStar(0, 0, 32, 32);
                 break;
             case 1:
-                trapManager.addBall(game_Width, 0, 32, 32);
+                trapManager.addStar(game_Width, 0, 32, 32);
                 break;
             case 2:
-                trapManager.addBall(0, game_Height, 32, 32);
+                trapManager.addStar(0, game_Height, 32, 32);
                 break;
             case 3:
-                trapManager.addBall(game_Width, game_Height, 32, 32);
+                trapManager.addStar(game_Width, game_Height, 32, 32);
                 break;
         }
     }

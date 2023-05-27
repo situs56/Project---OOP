@@ -28,12 +28,12 @@ public class ObjectManager {
     }
 
     public void updateObject() {
-        
+
     }
 
     public void drawObject(Graphics g) {
         for (Platform platform : platforms) {
-            platform.drawHitBox(g);
+            platform.drawPlatform(g);
         }
 
         for (Carrots carrot : carrots) {
@@ -41,7 +41,7 @@ public class ObjectManager {
         }
 
         for (Platform2 platform2 : platform2s) {
-            platform2.drawHitBox(g);
+            platform2.drawPlatform2(g);
         }
     }
 

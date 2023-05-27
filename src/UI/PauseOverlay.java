@@ -31,7 +31,7 @@ public class PauseOverlay {
 		int unpauseX = (int) (600);
 		int bY = (int) (325);
 		menuB = new UrmButton(menuX, bY, 50, 50, 2);
-		replayB = new UrmButton(replayX, bY, 50, 50, 1);
+		replayB = new UrmButton(replayX, bY, 50, 50, 3);
 		unpauseB = new UrmButton(unpauseX, bY, 50, 50, 0);
 	}
 
@@ -47,10 +47,10 @@ public class PauseOverlay {
 	}
 
 	public void mouseDragged(MouseEvent e) {
-        if (volumeButton.isMousePressed()) {
-            volumeButton.changeX(e.getX());
-        }
-    }
+		if (volumeButton.isMousePressed()) {
+			volumeButton.changeX(e.getX());
+		}
+	}
 
 	public void mousePressed(MouseEvent e) {
 		if (isIn(e, menuB))

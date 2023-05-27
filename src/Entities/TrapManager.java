@@ -16,7 +16,7 @@ public class TrapManager {
     private static List<Bullet> bullets;
     private static List<Cannon> cannons;
     private static List<Saw> saws;
-    private static List<Ball> balls;
+    private static List<Star> stars;
 
     private static long lastShotTime = System.currentTimeMillis();
 
@@ -25,7 +25,7 @@ public class TrapManager {
         bullets = new ArrayList<>();
         cannons = new ArrayList<>();
         saws = new ArrayList<>();
-        balls = new ArrayList<>();
+        stars = new ArrayList<>();
         random = new Random();
     }
 
@@ -42,8 +42,8 @@ public class TrapManager {
             saw.updateSaw();
         }
 
-        for (Ball ball : balls) {
-            ball.updateBall();
+        for (Star star : stars) {
+            star.updateStar();
         }
 
         long currentTime = System.currentTimeMillis();
@@ -70,8 +70,8 @@ public class TrapManager {
             cannon.draw(g);
         }
 
-        for (Ball ball : balls) {
-            ball.draw(g);
+        for (Star star : stars) {
+            star.draw(g);
         }
     }
 
@@ -92,8 +92,8 @@ public class TrapManager {
         cannons.add(new Cannon(x, y, width, height));
     }
 
-    public void addBall(float x, float y, int width, int height) {
-        balls.add(new Ball(x, y, width, height));
+    public void addStar(float x, float y, int width, int height) {
+        stars.add(new Star(x, y, width, height));
     }
 
     public void CannonShooting() {
@@ -103,10 +103,10 @@ public class TrapManager {
     }
 
     public void Shoot(Cannon cannon) {
-        int dir = 1;
         if (cannon.getHitBox().x >= Game.game_Width)
-            dir = -1;
-        addBullet((int) cannon.getHitBox().x, (int) cannon.getHitBox().y, 32, 32, dir);
+            addBullet((int) cannon.getHitBox().x - 32, (int) cannon.getHitBox().y, 32, 32, -1);
+        else
+            addBullet((int) cannon.getHitBox().x, (int) cannon.getHitBox().y, 32, 32, 1);
     }
 
     public void removeArrow(Arrow arrow) {
@@ -129,8 +129,8 @@ public class TrapManager {
         return cannons;
     }
 
-    public static List<Ball> getBalls() {
-        return balls;
+    public static List<Star> getStars() {
+        return stars;
     }
 
     public void checkArrowTouched(Player player) {
@@ -147,9 +147,9 @@ public class TrapManager {
             }
     }
 
-    public void checkBallTouched(Player player) {
-        for (Ball ball : getBalls())
-            if (ball.getHitBox().intersects(player.getHitBox())) {
+    public void checkStarTouched(Player player) {
+        for (Star star : getStars())
+            if (star.getHitBox().intersects(player.getHitBox())) {
                 player.dead();
             }
     }
@@ -166,6 +166,6 @@ public class TrapManager {
         bullets.clear();
         cannons.clear();
         saws.clear();
-        balls.clear();
+        stars.clear();
     }
 }

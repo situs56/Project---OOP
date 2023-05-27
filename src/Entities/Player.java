@@ -2,6 +2,11 @@ package src.Entities;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
+
 import src.Game.Game;
 import src.Gamestate.Playing;
 import src.Object.Platform;
@@ -9,6 +14,15 @@ import src.Object.Platform2;
 
 public class Player extends Entity {
 
+    public static final int IDLE = 0;
+    public static final int Running = 2;
+    public static final int Jumping = 3;
+
+    private BufferedImage[][] animations;
+    private int aniTick, aniIndex, aniSpeed = 50;
+    private int playerAction;
+    private int playerDir = -1;
+    private boolean moving = false;
     private Playing playing;
     private Platform platform;
 
@@ -23,9 +37,12 @@ public class Player extends Entity {
     public Player(float x, float y, int height, int width, Playing playing) {
         super(x, y, height, width);
         this.playing = playing;
+        loadAnimations();
     }
 
     public void updatePlayer() {
+        updateAnimationTick();
+        setAnimation();
         updatePos();
         updateHitBox();
         Touching();
@@ -85,6 +102,69 @@ public class Player extends Entity {
     public void Render(Graphics g) {
         g.drawRect((int) x, (int) y, width, height);
         drawHitBox(g);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height,
+                null);
+    }
+
+    public void setDirection(int direction) {
+        this.playerDir = direction;
+        moving = true;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    private void updateAnimationTick() {
+        aniTick++;
+        if (aniTick >= aniSpeed) {
+            aniTick = 0;
+            aniIndex++;
+            if (aniIndex >= GetSpriteAmount(playerAction))
+                aniIndex = 0;
+
+        }
+    }
+
+    private int GetSpriteAmount(int playerAction) {
+        switch (playerAction) {
+            case IDLE:
+                return 1;
+            case Running:
+                return 3;
+            case Jumping:
+                return 3;
+            default:
+                return 0;
+        }
+    }
+
+    private void setAnimation() {
+        if (moving)
+            playerAction = Running;
+        else
+            playerAction = IDLE;
+    }
+
+    private void loadAnimations() {
+        InputStream is = getClass().getResourceAsStream("/res/rabbit.png");
+        try {
+            BufferedImage img = ImageIO.read(is);
+
+            animations = new BufferedImage[6][4];
+            for (int j = 0; j < animations.length; j++)
+                for (int i = 0; i < animations[j].length; i++)
+                    animations[j][i] = img.getSubimage(i * 55, j * 74, 55, 74);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private boolean Solid(float x, float y, float Xmove, float Ymove) {
@@ -118,8 +198,8 @@ public class Player extends Entity {
 
     public void resetAll() {
         dead = false;
-        this.x = Game.game_Width/2;
-        this.y = Game.game_Height/2;
+        this.x = Game.game_Width / 2;
+        this.y = Game.game_Height / 2;
     }
 
     public boolean isLeft() {
@@ -162,8 +242,8 @@ public class Player extends Entity {
         playing.checkBulletTouched(this);
     }
 
-    public void checkBallTouched() {
-        playing.checkBallTouched(this);
+    public void checkStarTouched() {
+        playing.checkStarTouched(this);
     }
 
     private void checkSawTouched() {
@@ -173,7 +253,7 @@ public class Player extends Entity {
     public void Touching() {
         checkArrowTouched();
         checkBulletTouched();
-        checkBallTouched();
+        checkStarTouched();
         checkSawTouched();
         checkCarrotTouched();
     }
@@ -181,10 +261,10 @@ public class Player extends Entity {
     public void dead() {
         dead = true;
     }
+
     public void resetDirBooleans() {
-		left = false;
-		right = false;
-		up = false;
-		//down = false;
-	}
+        left = false;
+        right = false;
+        up = false;
+    }
 }
