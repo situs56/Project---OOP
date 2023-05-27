@@ -92,14 +92,12 @@ public class Playing extends State implements Methods {
 
     @Override
     public void update() {
-        if (!paused) {
+        if(!gameOver)
+        {if (!paused) {
             Level.update();
             player.updatePlayer();
         }
-
-        if (gameOver) {
-            resetAll();
-        }
+    }
     }
 
     @Override
@@ -131,8 +129,10 @@ public class Playing extends State implements Methods {
                 break;
             case KeyEvent.VK_ESCAPE:
                 paused = !paused;
-                if (paused) {
+                if(!gameOver){
+                    if (paused) {
                     pauseGame();
+                    }
                 } else {
                     unpauseGame();
                 }
@@ -205,16 +205,22 @@ public class Playing extends State implements Methods {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (paused) {
+       if(!gameOver)
+        {if (paused) {
             pauseOverlay.mousePressed(e);
-        }
+        }}
+        else gameOverOverlay.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if(!gameOver)
+        {
         if (paused)
             pauseOverlay.mouseReleased(e);
     }
+    else gameOverOverlay.mouseReleased(e);
+}
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -226,8 +232,10 @@ public class Playing extends State implements Methods {
     @Override
     public void mouseMoved(MouseEvent e) {
         if (paused)
-            pauseOverlay.mouseMoved(e);
+            {pauseOverlay.mouseMoved(e);}
+
     }
+  
 
     public void unpauseGame() {
         paused = false;

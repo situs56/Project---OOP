@@ -31,7 +31,7 @@ public class PauseOverlay {
 		int unpauseX = (int) (600);
 		int bY = (int) (325);
 		menuB = new UrmButton(menuX, bY, 50, 50, 2);
-		replayB = new UrmButton(replayX, bY, 20, 20, 1);
+		replayB = new UrmButton(replayX, bY, 50, 50, 1);
 		unpauseB = new UrmButton(unpauseX, bY, 50, 50, 0);
 	}
 
@@ -82,7 +82,7 @@ public class PauseOverlay {
 				playing.unpauseGame();
 		}
 		menuB.resetBools();
-		// replayB.resetBools();
+		replayB.resetBools();
 		unpauseB.resetBools();
 		volumeButton.resetBools();
 	}

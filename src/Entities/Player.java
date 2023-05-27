@@ -181,4 +181,10 @@ public class Player extends Entity {
     public void dead() {
         dead = true;
     }
+    public void resetDirBooleans() {
+		left = false;
+		right = false;
+		up = false;
+		//down = false;
+	}
 }

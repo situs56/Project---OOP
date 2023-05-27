@@ -118,4 +118,8 @@ public class Game implements Runnable {
     public Playing getPlaying() {
         return playing;
     }
+    public void windowFocusLost() {
+		if (Gamestate.state == Gamestate.PLAYING)
+			playing.getPlayer().resetDirBooleans();
+	}
 }

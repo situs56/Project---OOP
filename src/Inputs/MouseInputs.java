@@ -58,7 +58,6 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 				gamePanel.getGame().getMenu().mousePressed(e);
 				break;
 			case PLAYING:
-				System.out.print("dd");
 				gamePanel.getGame().getPlaying().mousePressed(e);
 				break;
 			default:

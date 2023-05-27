@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import src.Game.Game;
 import src.UI.MenuButton;
 
+
 public class State {
     protected Game game;
 
