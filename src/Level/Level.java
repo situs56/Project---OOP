@@ -45,7 +45,7 @@ public class Level {
         randomSaws();
     }
 
-    public void createBall() {
+    public void createStar() {
         randomStar();
     }
 

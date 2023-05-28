@@ -8,14 +8,8 @@ import java.util.TimerTask;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import src.Entities.Player;
 import src.Entities.TrapManager;
@@ -101,7 +95,7 @@ public class Playing extends State implements Methods {
                             level.createCannon();
                             break;
                         case 2:
-                            level.createBall();
+                            level.createStar();
                             break;
                     }
                 }
@@ -136,7 +130,7 @@ public class Playing extends State implements Methods {
     @Override
     public void draw(Graphics g) {
         g.drawImage(img, 0, 0, game_Width, game_Height, null);
-        player.Render(g);
+        player.render(g);
         Level.draw(g);
 
         if (gameOver)
@@ -226,6 +220,7 @@ public class Playing extends State implements Methods {
     }
 
     public void resetAll() {
+        trapTask.cancel();
         gameOver = false;
 
         player.resetAll();

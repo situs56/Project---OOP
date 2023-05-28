@@ -3,9 +3,6 @@ package src.Game;
 
 import java.awt.Graphics;
 
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-
 import src.Entities.Player;
 import src.Gamestate.Gamestate;
 import src.Gamestate.Menu;
@@ -17,7 +14,6 @@ public class Game implements Runnable {
     private gamePanel panel;
     private gameWindow window;
     private Thread gameLoopThread;
-    private Player player;
     private final int FPS = 240;
     private final int UPS = 240;
     private Playing playing;

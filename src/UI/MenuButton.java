@@ -1,8 +1,6 @@
 package src.UI;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -12,6 +10,7 @@ import javax.imageio.ImageIO;
 import src.Gamestate.Gamestate;
 
 public class MenuButton {
+
     private int xPos, yPos;
     private Gamestate state;
     private Rectangle bounds;
@@ -60,7 +59,7 @@ public class MenuButton {
         return mousePressed;
     }
 
-    public void setMOusePressed(boolean mousePressed) {
+    public void setMousePressed(boolean mousePressed) {
         this.mousePressed = mousePressed;
     }
 
@@ -75,10 +74,6 @@ public class MenuButton {
 
     public Rectangle getBounds() {
         return bounds;
-    }
-
-    public void setMousePressed(boolean mousePressed) {
-        this.mousePressed = mousePressed;
     }
 
     public Gamestate getState() {
