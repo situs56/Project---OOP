@@ -1,42 +1,34 @@
 package src.Entities;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
-import java.awt.Graphics;
-
-import static src.Game.Game.game_Height;
-import static src.Game.Game.game_Width;
 
 public class Cannon extends Entity {
-
-    private BufferedImage[] animations;
-    private int aniTick, aniIndex, aniSpeed = 300;
+    private BufferedImage img;
+    private int aniTick;
+    private int aniIndex;
+    private int aniSpeed = 300;
 
     public Cannon(float x, float y, int width, int height) {
         super(x, y, width, height);
-        loadAnimations();
+        this.ImportImg();
     }
 
-    private void loadAnimations() {
-        InputStream is = getClass().getResourceAsStream("/res/cannon.png");
+    public void ImportImg() {
+        InputStream is = this.getClass().getResourceAsStream("/res/cannon.png");
+
         try {
-            BufferedImage img = ImageIO.read(is);
-
-            animations = new BufferedImage[5];
-            for (int i = 0; i < 5; i++)
-                animations[i] = img.getSubimage(5, i * 67, 54, 67);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            this.img = ImageIO.read(is);
+        } catch (IOException var3) {
+            var3.printStackTrace();
         }
+
     }
 
     public void updateCannon() {
@@ -55,9 +47,6 @@ public class Cannon extends Entity {
 
     public void draw(Graphics g) {
         // g.drawRect((int) x, (int) y, width, height);
-        if ((int) x >= game_Width)
-            g.drawImage(animations[aniIndex], (int) x, (int) y, width * -1, height, null);
-        else
-            g.drawImage(animations[aniIndex], (int) x, (int) y, width, height, null);
+        g.drawImage(this.img, (int)this.x, (int)this.y, 32, 32, (ImageObserver)null);
     }
 }

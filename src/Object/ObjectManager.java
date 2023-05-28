@@ -36,7 +36,7 @@ public class ObjectManager {
             platform.drawPlatform(g);
         }
 
-        for (Carrots carrot : getCarrots()) {
+        for (Carrots carrot : carrots) {
             carrot.drawCarrot(g);
         }
 

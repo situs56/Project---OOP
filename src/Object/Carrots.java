@@ -42,7 +42,7 @@ public class Carrots extends GameObject {
     public void drawCarrot(Graphics g) {
         // g.setColor(COLOR);
         // g.drawRect((int) x, (int) y, size, size);
-        // drawHitBox(g);
-        g.drawImage(img.getSubimage(225, 69, 121, 301), (int) x, (int) (y - 16), width, (int) (height * 2), null);
+        drawHitBox(g);
+        g.drawImage(img, (int) x, (int)y, width, (int) height, null);
     }
 }

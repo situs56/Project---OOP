@@ -45,11 +45,11 @@ public class Star extends Entity {
 
     public void draw(Graphics g) {
         // drawHitBox(g);
-        g.drawImage(img.getSubimage(20, 24, 183, 175), (int) x, (int) y, width, height, null);
+        g.drawImage(img, (int) x, (int) y, width, height, null);
     }
 
     private void ImportImg() {
-        InputStream is = getClass().getResourceAsStream("/res/star.png");
+        InputStream is = getClass().getResourceAsStream("/res/meteor.png");
         try {
             img = ImageIO.read(is);
 

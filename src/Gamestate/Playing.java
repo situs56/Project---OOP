@@ -130,7 +130,7 @@ public class Playing extends State implements Methods {
     @Override
     public void draw(Graphics g) {
         g.drawImage(img, 0, 0, game_Width, game_Height, null);
-        player.render(g);
+        player.Render(g);
         Level.draw(g);
 
         if (gameOver)

@@ -1,52 +1,37 @@
 package src.Entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 public class Bullet extends Entity {
-
-    private BufferedImage[] animations;
-    private int aniTick, aniIndex, aniSpeed = 50;
-    private float speed = 0.2f;
+    private BufferedImage img;
+    private int aniTick;
+    private int aniIndex;
+    private int aniSpeed = 50;
+    private float speed = 0.2F;
     private int dir;
 
     public Bullet(float x, float y, int width, int height, int dir) {
         super(x, y, width, height);
         this.dir = dir;
-        loadAnimations();
+        this.ImportImg();
     }
 
-    private void loadAnimations() {
-        InputStream is = getClass().getResourceAsStream("/res/bullet.png");
+    public void ImportImg() {
+        InputStream is = this.getClass().getResourceAsStream("/res/bullet.png");
+
         try {
-            BufferedImage img = ImageIO.read(is);
-
-            animations = new BufferedImage[5];
-            for (int i = 0; i < 5; i++)
-                animations[i] = img.getSubimage(i * 60, 0, 60, 52);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            this.img = ImageIO.read(is);
+        } catch (IOException var3) {
+            var3.printStackTrace();
         }
-    }
 
-    private void updateAnimationTick() {
-        aniTick++;
-        if (aniTick >= aniSpeed) {
-            aniTick = 0;
-            aniIndex++;
-            if (aniIndex >= 5)
-                aniIndex = 0;
-        }
     }
 
     public void updatePos() {
@@ -56,12 +41,11 @@ public class Bullet extends Entity {
     public void UpdateBullet() {
         updatePos();
         updateHitBox();
-        updateAnimationTick();
     }
 
     public void draw(Graphics g) {
         // g.drawRect((int) x, (int) y, width, height);
         // drawHitBox(g);
-        g.drawImage(animations[aniIndex], (int) x, (int) y, width, height, null);
+        g.drawImage(img, (int) x, (int) y, width, height, null);
     }
 }

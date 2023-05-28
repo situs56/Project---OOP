@@ -54,24 +54,50 @@ public class TrapManager {
     }
 
     public void drawTraps(Graphics g) {
-        for (Arrow arrow : getArrows()) {
+        List<Arrow> arrowsToRemove = new ArrayList<>();
+        List<Bullet> bulletsToRemove = new ArrayList<>();
+        List<Saw> sawsToRemove = new ArrayList<>();
+        List<Cannon> cannonsToRemove = new ArrayList<>();
+        List<Star> starsToRemove = new ArrayList<>();
+
+        for (Arrow arrow : arrows) {
             arrow.draw(g);
         }
 
-        for (Bullet bullet : getBullets()) {
+        for (Bullet bullet : bullets) {
             bullet.draw(g);
         }
 
-        for (Saw saw : getSaws()) {
+        for (Saw saw : saws) {
             saw.draw(g);
         }
 
-        for (Cannon cannon : getCannons()) {
+        for (Cannon cannon : cannons) {
             cannon.draw(g);
         }
 
-        for (Star star : getStars()) {
+        for (Star star : stars) {
             star.draw(g);
+        }
+
+        for (Arrow arrow : arrowsToRemove) {
+            removeArrow(arrow);
+        }
+
+        for (Bullet bullet : bulletsToRemove) {
+            bullets.remove(bullet);
+        }
+
+        for (Saw saw : sawsToRemove) {
+            saws.remove(saw);
+        }
+
+        for (Cannon cannon : cannonsToRemove) {
+            cannons.remove(cannon);
+        }
+
+        for (Star star : starsToRemove) {
+            stars.remove(star);
         }
     }
 
@@ -138,28 +164,28 @@ public class TrapManager {
     public void checkArrowTouched(Player player) {
         for (Arrow arrow : getArrows())
             if (arrow.getHitBox().intersects(player.getHitBox())) {
-                player.die();
+                player.dead();
             }
     }
 
     public void checkBulletTouched(Player player) {
         for (Bullet bullet : getBullets())
             if (bullet.getHitBox().intersects(player.getHitBox())) {
-                player.die();
+                player.dead();
             }
     }
 
     public void checkStarTouched(Player player) {
         for (Star star : getStars())
             if (star.getHitBox().intersects(player.getHitBox())) {
-                player.die();
+                player.dead();
             }
     }
 
     public void checkSawTouched(Player player) {
         for (Saw saw : getSaws())
             if (saw.getHitBox().intersects(player.getHitBox())) {
-                player.die();
+                player.dead();
             }
     }
 

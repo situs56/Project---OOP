@@ -1,6 +1,8 @@
 package src.Entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +10,8 @@ import javax.imageio.ImageIO;
 import java.util.Random;
 
 import src.Game.Game;
+import static src.Game.Game.Tile_Actual_Size;
+import static src.Game.Game.Scale;;
 
 public class Arrow extends Entity {
 
@@ -44,7 +48,7 @@ public class Arrow extends Entity {
     public void draw(Graphics g) {
         // g.drawRect((int) x, (int) y, width, height);
         // drawHitBox(g);
-        g.drawImage(img.getSubimage(0, 6, 87, 293), (int) x, (int) y, width, height, null);
+        g.drawImage(img, (int) x, (int) y, width, height, null);
     }
 
     public void ImportImg() {

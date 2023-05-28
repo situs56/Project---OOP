@@ -16,12 +16,12 @@ import src.Object.Platform2;
 public class Player extends Entity {
 
     public static final int IDLE = 0;
-    public static final int RUNNING = 3;
-    public static final int JUMPING_DOWN = 2;
-    public static final int JUMPING_UP = 1;
+    public static final int Running = 3;
+    public static final int JumpingDown = 2;
+    public static final int JumpingUp = 1;
 
     private BufferedImage[][] animations;
-    private int animationTick, animationIndex, animationSpeed = 50;
+    private int aniTick, aniIndex, aniSpeed = 50;
     private int playerAction;
     private int playerDir = -1;
     private boolean moving = false;
@@ -40,7 +40,7 @@ public class Player extends Entity {
     private float speed = 0.5f;
     private boolean onGround = false;
     private boolean dead = false;
-    private String src = "/res/IdleRight.png";
+    private String src = "/res/IdleRight.png";;
 
     public Player(float x, float y, int height, int width, Playing playing) {
         super(x, y, height, width);
@@ -56,27 +56,27 @@ public class Player extends Entity {
         setAnimation();
         updatePos();
         updateHitBox();
-        touching();
-        if (dead) {
+        Touching();
+        if (dead == true) {
             playing.setGameOver(true);
         }
     }
 
     public void updatePos() {
-        float xMove = 0, yMove = 0;
+        float Xmove = 0, Ymove = 0;
 
         if (left) {
-            xMove -= speed;
+            Xmove -= speed;
             src = "/res/AnimationLeft.png";
         }
         if (right) {
-            xMove += speed;
+            Xmove += speed;
             src = "/res/AnimationRight.png";
         }
 
         if (!onGround) {
             airSpeed += gravity;
-            yMove += airSpeed;
+            Ymove += airSpeed;
         } else {
             airSpeed = 0f;
         }
@@ -86,9 +86,9 @@ public class Player extends Entity {
             onGround = false;
         }
 
-        if (!solid(x, y, xMove, yMove)) {
-            this.x += xMove;
-            this.y += yMove;
+        if (!Solid(x, y, Xmove, Ymove)) {
+            this.x += Xmove;
+            this.y += Ymove;
 
             onGround = false;
 
@@ -98,41 +98,54 @@ public class Player extends Entity {
                 this.x = Game.game_Width - width;
             }
         } else {
-            if (yMove > 0) {
+            if (Ymove > 0) {
                 resetOnGround();
-            } else if (yMove < 0) {
+            } else if (Ymove < 0) {
                 airSpeed = 0f;
-            } else if (yMove == 0) {
+            } else if (Ymove == 0) {
                 onGround = true;
             }
         }
 
         if (onGround) {
-            this.x += xMove;
+            this.x += Xmove;
         }
     }
 
-    public void render(Graphics g) {
+    public void Render(Graphics g) {
+        // g.drawRect((int) x, (int) y, width, height);
+        // drawHitBox(g);
         Image subImage = getSubImage();
         g.drawImage(subImage, (int) x - 5, (int) y - 8, 40, 40, null);
     }
 
     public BufferedImage getImage(String src) {
-        try (InputStream is = getClass().getResourceAsStream(src)) {
-            return ImageIO.read(is);
+        InputStream is = getClass().getResourceAsStream(src);
+
+        try {
+            this.image = ImageIO.read(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return this.image;
     }
 
     public Image getSubImage() {
-        return image.getSubimage(frameIndex * 32, 0, 32, 32);
+        return this.image.getSubimage(frameIndex * 32, 0, 32, 32);
+    }
+
+    public void setDirection(int direction) {
+        this.playerDir = direction;
+        moving = true;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
     }
 
     private void updateAnimationTick(BufferedImage img) {
 
-        if (right || left) {
+        if (right) {
             currentFrameTime++;
             if (currentFrameTime >= updatesPerFrame) {
                 currentFrameTime = 0;
@@ -141,35 +154,43 @@ public class Player extends Entity {
                     frameIndex = 0;
                 }
             }
-        } else {
+        } else if (left) {
+            currentFrameTime++;
+            if (currentFrameTime >= updatesPerFrame) {
+                currentFrameTime = 0;
+                frameIndex++;
+                if (frameIndex >= img.getWidth() / 32 - 1) {
+                    frameIndex = 0;
+                }
+            }
+        } else
             frameIndex = 0;
-        }
     }
 
     private void setAnimation() {
         if (moving)
-            playerAction = RUNNING;
+            playerAction = Running;
         else
             playerAction = IDLE;
     }
 
-    private boolean solid(float x, float y, float xMove, float yMove) {
-        Rectangle prediction = new Rectangle((int) (x + xMove), (int) (y + yMove), width, height);
+    private boolean Solid(float x, float y, float Xmove, float Ymove) {
+        Rectangle Predict = new Rectangle((int) (x + Xmove), (int) (y + Ymove), width, height);
 
-        if (prediction.x < 0 || prediction.x >= Game.game_Width)
+        if (Predict.x < 0 || Predict.x >= Game.game_Width)
             return true;
 
-        if (prediction.y < 0 || prediction.y >= Game.game_Height)
+        if (Predict.y < 0 || Predict.y >= Game.game_Height)
             return true;
 
         for (Rectangle platformHitbox : Platform.platformHitboxList())
-            if (prediction.intersects(platformHitbox))
+            if (Predict.intersects(platformHitbox))
                 return true;
 
         for (Rectangle platform2Hitbox : Platform2.platform2HitboxList()) {
-            if (prediction.intersects(platform2Hitbox)) {
-                if (yMove > 0 && y + height + yMove >= platform2Hitbox.getY()
-                        && y + height + yMove <= platform2Hitbox.getY() + 5) {
+            if (Predict.intersects(platform2Hitbox)) {
+                if (Ymove > 0 && y + height + Ymove >= platform2Hitbox.getY()
+                        && y + height + Ymove <= platform2Hitbox.getY() + 5) {
                     return true;
                 }
             }
@@ -236,7 +257,7 @@ public class Player extends Entity {
         playing.checkSawTouched(this);
     }
 
-    public void touching() {
+    public void Touching() {
         checkArrowTouched();
         checkBulletTouched();
         checkStarTouched();
@@ -244,7 +265,7 @@ public class Player extends Entity {
         checkCarrotTouched();
     }
 
-    public void die() {
+    public void dead() {
         dead = true;
     }
 
