@@ -6,33 +6,39 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+
 import javax.imageio.ImageIO;
 
 import src.Game.Game;
 import src.UI.MenuButton;
+import src.audio.Audio;
 
 import static src.Game.Game.game_Height;
 import static src.Game.Game.game_Width;
 
 public class Menu extends State implements Methods {
 
+    private Playing playing;
     private BufferedImage img;
+    private Audio audio;
 
     private MenuButton[] buttons = new MenuButton[1];
 
     public Menu(Game game) {
         super(game);
+        playing = new Playing(game);
         ImportImg();
         loadButtons();
+        this.audio = new Audio();
     }
 
     private void loadButtons() {
-        buttons[0] = new MenuButton(game_Width / 2 - 150, 300, 0, Gamestate.PLAYING);
+        buttons[0] = new MenuButton(game_Width / 2 - 200, 250, Gamestate.PLAYING);
     }
 
     @Override
     public void update() {
-        // TODO Auto-generated method stub
+        // buttons[0].updateMenuButton();
     }
 
     @Override
@@ -86,14 +92,19 @@ public class Menu extends State implements Methods {
     public void mouseReleased(MouseEvent e) {
         for (MenuButton mb : buttons) {
             if (isIn(e, mb)) {
-                if (mb.isMousePressed())
+                if (mb.isMousePressed()) {
+                    playing.resetAll();
                     mb.applyGamestate();
+                }
+                if (mb.getState() == Gamestate.PLAYING) {
+                    game.getAudio().stopSound();
+                    game.getAudio().playPlayingSound();
+                }
                 break;
             }
         }
 
         resetButtons();
-
     }
 
     private void resetButtons() {
@@ -112,6 +123,5 @@ public class Menu extends State implements Methods {
                 mb.setMouseOver(true);
                 break;
             }
-
     }
 }

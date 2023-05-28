@@ -8,7 +8,14 @@ import java.util.TimerTask;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import src.Entities.Player;
 import src.Entities.TrapManager;
@@ -20,6 +27,7 @@ import src.Object.Platform;
 import src.Object.Platform2;
 import src.UI.GameOverOverlay;
 import src.UI.PauseOverlay;
+import src.audio.Audio;
 
 import static src.Game.Game.game_Height;
 import static src.Game.Game.game_Width;
@@ -38,6 +46,7 @@ public class Playing extends State implements Methods {
     private Timer timer;
     private TimerTask trapTask;
     private BufferedImage img;
+    private Audio audio;
 
     private static long lastSpawn = System.currentTimeMillis();
 
@@ -48,6 +57,7 @@ public class Playing extends State implements Methods {
         super(game);
         initClasses();
         ImportImg();
+        this.audio = new Audio();
     }
 
     public void initClasses() {
@@ -55,7 +65,7 @@ public class Playing extends State implements Methods {
         objectManager = new ObjectManager();
         trapManager = new TrapManager();
         gameOverOverlay = new GameOverOverlay(this);
-        pauseOverlay = new PauseOverlay(this);
+        pauseOverlay = new PauseOverlay(this, game);
 
         createTrap();
 
@@ -63,7 +73,7 @@ public class Playing extends State implements Methods {
         level.createPlatform();
         level.createPlatform2();
 
-        player = new Player(Game.game_Width / 2, Game.game_Height / 2, 32, 32, this);
+        player = new Player(Game.game_Width / 2, Game.game_Height / 2, 25, 27, this);
 
         objectManager.addScore();
         objectManager.addTimer();
@@ -71,7 +81,7 @@ public class Playing extends State implements Methods {
     }
 
     public void createTrap() {
-        level.createArrow(20, 100);
+        level.createArrow(20, 50);
         timer = new Timer();
         scheduleTrapTask();
     }
@@ -103,7 +113,8 @@ public class Playing extends State implements Methods {
 
     @Override
     public void update() {
-
+        gameOverOverlay.update();
+        pauseOverlay.update();
         if (paused)
             objectManager.pauseTimer();
 

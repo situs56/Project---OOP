@@ -54,7 +54,7 @@ public class Cannon extends Entity {
     }
 
     public void draw(Graphics g) {
-        g.drawRect((int) x, (int) y, width, height);
+        // g.drawRect((int) x, (int) y, width, height);
         if ((int) x >= game_Width)
             g.drawImage(animations[aniIndex], (int) x, (int) y, width * -1, height, null);
         else

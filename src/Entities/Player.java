@@ -1,6 +1,7 @@
 package src.Entities;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -15,8 +16,9 @@ import src.Object.Platform2;
 public class Player extends Entity {
 
     public static final int IDLE = 0;
-    public static final int Running = 2;
-    public static final int Jumping = 3;
+    public static final int Running = 3;
+    public static final int JumpingDown = 2;
+    public static final int JumpingUp = 1;
 
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 50;
@@ -25,6 +27,11 @@ public class Player extends Entity {
     private boolean moving = false;
     private Playing playing;
     private Platform platform;
+    private BufferedImage image;
+
+    private int currentFrameTime;
+    private int updatesPerFrame;
+    private int frameIndex;
 
     private boolean left, right, up;
     private float gravity = 0.002f * Game.Scale;
@@ -33,15 +40,19 @@ public class Player extends Entity {
     private float speed = 0.5f;
     private boolean onGround = false;
     private boolean dead = false;
+    private String src = "/res/IdleRight.png";;
 
     public Player(float x, float y, int height, int width, Playing playing) {
         super(x, y, height, width);
         this.playing = playing;
-        loadAnimations();
+        this.updatesPerFrame = 50;
+        this.frameIndex = 0;
+        this.currentFrameTime = 0;
     }
 
     public void updatePlayer() {
-        updateAnimationTick();
+        image = getImage(src);
+        updateAnimationTick(image);
         setAnimation();
         updatePos();
         updateHitBox();
@@ -56,9 +67,11 @@ public class Player extends Entity {
 
         if (left) {
             Xmove -= speed;
+            src = "/res/AnimationLeft.png";
         }
         if (right) {
             Xmove += speed;
+            src = "/res/AnimationRight.png";
         }
 
         if (!onGround) {
@@ -100,10 +113,25 @@ public class Player extends Entity {
     }
 
     public void Render(Graphics g) {
-        g.drawRect((int) x, (int) y, width, height);
-        drawHitBox(g);
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height,
-                null);
+        // g.drawRect((int) x, (int) y, width, height);
+        // drawHitBox(g);
+        Image subImage = getSubImage();
+        g.drawImage(subImage, (int) x - 5, (int) y - 8, 40, 40, null);
+    }
+
+    public BufferedImage getImage(String src) {
+        InputStream is = getClass().getResourceAsStream(src);
+
+        try {
+            this.image = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return this.image;
+    }
+
+    public Image getSubImage() {
+        return this.image.getSubimage(frameIndex * 32, 0, 32, 32);
     }
 
     public void setDirection(int direction) {
@@ -115,28 +143,28 @@ public class Player extends Entity {
         this.moving = moving;
     }
 
-    private void updateAnimationTick() {
-        aniTick++;
-        if (aniTick >= aniSpeed) {
-            aniTick = 0;
-            aniIndex++;
-            if (aniIndex >= GetSpriteAmount(playerAction))
-                aniIndex = 0;
+    private void updateAnimationTick(BufferedImage img) {
 
-        }
-    }
-
-    private int GetSpriteAmount(int playerAction) {
-        switch (playerAction) {
-            case IDLE:
-                return 1;
-            case Running:
-                return 3;
-            case Jumping:
-                return 3;
-            default:
-                return 0;
-        }
+        if (right) {
+            currentFrameTime++;
+            if (currentFrameTime >= updatesPerFrame) {
+                currentFrameTime = 0;
+                frameIndex++;
+                if (frameIndex >= img.getWidth() / 32 - 1) {
+                    frameIndex = 0;
+                }
+            }
+        } else if (left) {
+            currentFrameTime++;
+            if (currentFrameTime >= updatesPerFrame) {
+                currentFrameTime = 0;
+                frameIndex++;
+                if (frameIndex >= img.getWidth() / 32 - 1) {
+                    frameIndex = 0;
+                }
+            }
+        } else
+            frameIndex = 0;
     }
 
     private void setAnimation() {
@@ -144,27 +172,6 @@ public class Player extends Entity {
             playerAction = Running;
         else
             playerAction = IDLE;
-    }
-
-    private void loadAnimations() {
-        InputStream is = getClass().getResourceAsStream("/res/rabbit.png");
-        try {
-            BufferedImage img = ImageIO.read(is);
-
-            animations = new BufferedImage[6][4];
-            for (int j = 0; j < animations.length; j++)
-                for (int i = 0; i < animations[j].length; i++)
-                    animations[j][i] = img.getSubimage(i * 55, j * 74, 55, 74);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private boolean Solid(float x, float y, float Xmove, float Ymove) {

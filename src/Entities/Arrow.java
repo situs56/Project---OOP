@@ -44,7 +44,7 @@ public class Arrow extends Entity {
     public void draw(Graphics g) {
         // g.drawRect((int) x, (int) y, width, height);
         // drawHitBox(g);
-        g.drawImage(img.getSubimage(179, 0, 131, 360), (int) x, (int) y, width, height, null);
+        g.drawImage(img.getSubimage(0, 6, 87, 293), (int) x, (int) y, width, height, null);
     }
 
     public void ImportImg() {

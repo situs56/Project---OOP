@@ -2,6 +2,7 @@ package src.UI;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -11,62 +12,40 @@ import javax.imageio.ImageIO;
 import src.Gamestate.Gamestate;
 
 public class MenuButton {
-    private int xPos, yPos, rowIndex;
+    private int xPos, yPos;
     private Gamestate state;
     private Rectangle bounds;
     private boolean mouseOver, mousePressed;
 
-    private BufferedImage[] animations;
-    private int aniTick, aniIndex, aniSpeed = 300;
+    private BufferedImage img;
 
-    public MenuButton(int xPos, int yPos, int rowIndex, Gamestate state) {
+    public MenuButton(int xPos, int yPos, Gamestate state) {
         this.xPos = xPos;
         this.yPos = yPos;
-        this.rowIndex = rowIndex;
         this.state = state;
         initBounds();
-        loadAnimations();
-    }
-
-    public void updateMenuButton() {
-        updateAnimationTick();
+        ImportImg();
     }
 
     public void draw(Graphics g) {
         // g.drawRect(xPos, yPos, 300, 100);
         // g.setColor(Color.BLACK);
         // g.drawString("Press any button to play", 300, 100);
-        g.drawImage(animations[aniIndex], xPos, yPos, 300, 100, null);
+        g.drawImage(img, (int) xPos, (int) yPos, 490, 192, null);
     }
 
-    private void loadAnimations() {
-        InputStream is = getClass().getResourceAsStream("/res/button.png");
+    private void ImportImg() {
+        InputStream is = getClass().getResourceAsStream("/res/playbutton.png");
         try {
-            BufferedImage img = ImageIO.read(is);
-
-            animations = new BufferedImage[2];
-            for (int i = 0; i < 2; i++)
-                animations[i] = img.getSubimage(i * 188, 0, 188, 92);
+            img = ImageIO.read(is);
 
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
-    private void updateAnimationTick() {
-        aniIndex = 0;
-        if (mousePressed)
-            aniIndex = 1;
-    }
-
     private void initBounds() {
-        bounds = new Rectangle(xPos, yPos, 200, 200);
+        bounds = new Rectangle(xPos, yPos, 490, 192);
     }
 
     public boolean isMouseOver() {
@@ -102,4 +81,7 @@ public class MenuButton {
         this.mousePressed = mousePressed;
     }
 
+    public Gamestate getState() {
+        return state;
+    }
 }

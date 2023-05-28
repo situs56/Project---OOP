@@ -54,6 +54,12 @@ public class TrapManager {
     }
 
     public void drawTraps(Graphics g) {
+        List<Arrow> arrowsToRemove = new ArrayList<>();
+        List<Bullet> bulletsToRemove = new ArrayList<>();
+        List<Saw> sawsToRemove = new ArrayList<>();
+        List<Cannon> cannonsToRemove = new ArrayList<>();
+        List<Star> starsToRemove = new ArrayList<>();
+
         for (Arrow arrow : arrows) {
             arrow.draw(g);
         }
@@ -72,6 +78,26 @@ public class TrapManager {
 
         for (Star star : stars) {
             star.draw(g);
+        }
+
+        for (Arrow arrow : arrowsToRemove) {
+            removeArrow(arrow);
+        }
+
+        for (Bullet bullet : bulletsToRemove) {
+            bullets.remove(bullet);
+        }
+
+        for (Saw saw : sawsToRemove) {
+            saws.remove(saw);
+        }
+
+        for (Cannon cannon : cannonsToRemove) {
+            cannons.remove(cannon);
+        }
+
+        for (Star star : starsToRemove) {
+            stars.remove(star);
         }
     }
 
@@ -97,16 +123,18 @@ public class TrapManager {
     }
 
     public void CannonShooting() {
-        for (Cannon cannon : getCannons()) {
+        List<Cannon> cannonsToShoot = new ArrayList<>(getCannons());
+
+        for (Cannon cannon : cannonsToShoot) {
             Shoot(cannon);
         }
     }
 
     public void Shoot(Cannon cannon) {
         if (cannon.getHitBox().x >= Game.game_Width)
-            addBullet((int) cannon.getHitBox().x - 32, (int) cannon.getHitBox().y, 32, 32, -1);
+            addBullet((int) cannon.getHitBox().x - 32, (int) cannon.getHitBox().y, 30, 30, -1);
         else
-            addBullet((int) cannon.getHitBox().x, (int) cannon.getHitBox().y, 32, 32, 1);
+            addBullet((int) cannon.getHitBox().x, (int) cannon.getHitBox().y, 30, 30, 1);
     }
 
     public void removeArrow(Arrow arrow) {

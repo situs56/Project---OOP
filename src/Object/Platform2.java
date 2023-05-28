@@ -23,11 +23,11 @@ public class Platform2 extends GameObject {
     public void drawPlatform2(Graphics g) {
         // g.setColor(Color.green);
         // g.fillRect((int) x, (int) y, width, height);
-        g.drawImage(img.getSubimage(0, 0, 95, 13), (int) x, (int) y, width, height, null);
+        g.drawImage(img.getSubimage(0, 0, 96, 16), (int) x, (int) y, width, height, null);
     }
 
     public void ImportImg() {
-        InputStream is = getClass().getResourceAsStream("/res/tile.png");
+        InputStream is = getClass().getResourceAsStream("/res/platform2.png");
         try {
             img = ImageIO.read(is);
 

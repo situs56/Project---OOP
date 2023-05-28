@@ -4,51 +4,80 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
+
 import src.Gamestate.Gamestate;
 import src.Gamestate.Playing;
+import src.audio.Audio;
 import src.Game.Game;
 
+import static src.Game.Game.game_Height;
+import static src.Game.Game.game_Width;
+
 public class PauseOverlay {
+
+	private Game game;
+	private Audio audio;
+	private BufferedImage img;
 	private Playing playing;
 	private UrmButton menuB, replayB, unpauseB;
 	private VolumeButton volumeButton;
 
-	public PauseOverlay(Playing playing) {
+	public PauseOverlay(Playing playing, Game game) {
 		this.playing = playing;
+		this.game = game;
 		createUrmButtons();
 		createVolumeButton();
+		ImportImg();
 	}
 
 	private void createVolumeButton() {
-		int vX = (int) (200);
-		int vY = (int) (100);
-		volumeButton = new VolumeButton(vX, vY, 350, 44);
+		int vX = (int) (210);
+		int vY = (int) (175);
+		volumeButton = new VolumeButton(vX, vY, 350, 60);
 	}
 
 	private void createUrmButtons() {
-		int menuX = (int) (100);
-		int replayX = (int) (387);
-		int unpauseX = (int) (600);
-		int bY = (int) (325);
-		menuB = new UrmButton(menuX, bY, 50, 50, 2);
-		replayB = new UrmButton(replayX, bY, 50, 50, 3);
-		unpauseB = new UrmButton(unpauseX, bY, 50, 50, 0);
+		menuB = new UrmButton(195, 256, 128, 128, 2);
+		replayB = new UrmButton(325, 256, 128, 128, 3);
+		unpauseB = new UrmButton(448, 258, 128, 128, 0);
 	}
 
 	public void update() {
-
+		menuB.update();
+		replayB.update();
+		unpauseB.update();
 	}
 
 	public void draw(Graphics g) {
+		g.drawImage(img, 192, 128, game_Width / 2, game_Height / 2, null);
 		menuB.draw(g);
 		replayB.draw(g);
 		unpauseB.draw(g);
 		volumeButton.draw(g);
 	}
 
+	public void ImportImg() {
+		InputStream is = getClass().getResourceAsStream("/res/pause.png");
+		try {
+			img = ImageIO.read(is);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void mouseDragged(MouseEvent e) {
 		if (volumeButton.isMousePressed()) {
+			float valueBefore = volumeButton.getFloatValue();
 			volumeButton.changeX(e.getX());
+			float valueAfter = volumeButton.getFloatValue();
+			if (valueBefore != valueAfter) {
+				game.getAudio().setVolume(valueAfter);
+			}
 		}
 	}
 

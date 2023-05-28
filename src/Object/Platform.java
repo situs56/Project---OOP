@@ -30,7 +30,7 @@ public class Platform extends GameObject {
     }
 
     private void ImportImg() {
-        InputStream is = getClass().getResourceAsStream("/res/platform.png");
+        InputStream is = getClass().getResourceAsStream("/res/ground.png");
         try {
             img = ImageIO.read(is);
 

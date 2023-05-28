@@ -27,8 +27,8 @@ public class Level {
     }
 
     public static void draw(Graphics g) {
-        trapManager.drawTraps(g);
         objectManager.drawObject(g);
+        trapManager.drawTraps(g);
         Score.draw(g);
         Timer.draw(g);
     }
@@ -59,12 +59,12 @@ public class Level {
 
     public void createPlatform2() {
         objectManager.addPlatform2(160, 330, 96, 20);
-        objectManager.addPlatform2(576, 330, 96, 20);
+        objectManager.addPlatform2(512, 330, 96, 20);
         objectManager.addPlatform2(336, 330, 96, 20);
         objectManager.addPlatform2(214, 250, 96, 20);
         objectManager.addPlatform2(458, 250, 96, 20);
         objectManager.addPlatform2(160, 170, 96, 20);
-        objectManager.addPlatform2(576, 170, 96, 20);
+        objectManager.addPlatform2(512, 170, 96, 20);
         objectManager.addPlatform2(336, 170, 96, 20);
     }
 

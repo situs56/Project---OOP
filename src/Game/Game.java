@@ -3,10 +3,14 @@ package src.Game;
 
 import java.awt.Graphics;
 
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+
 import src.Entities.Player;
 import src.Gamestate.Gamestate;
 import src.Gamestate.Menu;
 import src.Gamestate.Playing;
+import src.audio.Audio;
 
 public class Game implements Runnable {
 
@@ -16,8 +20,9 @@ public class Game implements Runnable {
     private Player player;
     private final int FPS = 240;
     private final int UPS = 240;
-
     private Playing playing;
+    private Audio audio;
+
     private Menu menu;
 
     public final static int Tile_Size = 32;
@@ -33,6 +38,7 @@ public class Game implements Runnable {
         panel = new gamePanel(this);
         window = new gameWindow(panel);
         panel.requestFocus();
+        audio = new Audio();
         startGameLoop();
     }
 
@@ -118,8 +124,13 @@ public class Game implements Runnable {
     public Playing getPlaying() {
         return playing;
     }
+
     public void windowFocusLost() {
-		if (Gamestate.state == Gamestate.PLAYING)
-			playing.getPlayer().resetDirBooleans();
-	}
+        if (Gamestate.state == Gamestate.PLAYING)
+            playing.getPlayer().resetDirBooleans();
+    }
+
+    public Audio getAudio() {
+        return audio;
+    }
 }
